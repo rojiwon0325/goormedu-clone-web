@@ -1,0 +1,34 @@
+@import url("https://hangeul.pstatic.net/hangeul_static/css/nanum-gothic.css");
+
+@tailwind base;
+* {
+  @apply font-NanumGothic select-none;
+}
+html,
+body,
+#root {
+  @apply h-full w-full;
+  @apply font-NanumGothic;
+}
+body {
+  @apply overscroll-none;
+}
+input,
+textarea,
+select {
+  @apply outline-none;
+}
+@tailwind components;
+.hwfull {
+  @apply h-full w-full;
+}
+.flex-center {
+  @apply flex items-center justify-center;
+}
+.header-h {
+  @apply h-7 md:h-11;
+}
+.header-w {
+  @apply w-7 md:w-11;
+}
+@tailwind utilities;

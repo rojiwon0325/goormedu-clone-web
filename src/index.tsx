@@ -1,18 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import { Common } from "components";
 import reportWebVitals from "./reportWebVitals";
+import "./styles/style.css";
 
-const dom = document.getElementById("root");
-
-if (dom) {
-  ReactDOM.createRoot(dom).render(
+const root = document.getElementById("root");
+if (root) {
+  ReactDOM.createRoot(root).render(
     <React.StrictMode>
-      <App />
+      <Common.ErrorBoundary>
+        <Common.Provider>
+          <App />
+        </Common.Provider>
+      </Common.ErrorBoundary>
     </React.StrictMode>
   );
 } else {
-  console.log("root element is required.");
+  console.log("element which id is root is required.");
 }
 
 // If you want to start measuring performance in your app, pass a function

@@ -6,7 +6,7 @@ import { useProfile } from "states/server/user";
 const Header: React.FC = () => {
   return (
     <header className="h-14 md:h-20 w-full flex-center border-gray86 border-b">
-      <div className="hwfull max-w-7xl px-4 flex-center justify-between">
+      <div className="h-full max-w flex-center justify-between">
         <div className="h-full flex-1 flex-center justify-between relative">
           <Logo />
           <Search />
@@ -40,24 +40,44 @@ const Logo: React.FC = () => (
 );
 
 const Search: React.FC = () => {
+  const navigate = useNavigate();
+  const inputRef = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState(false);
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    if (!search && inputRef.current) {
+      const query = inputRef.current.value.trim();
+      inputRef.current.value = "";
+      if (query.length > 0) {
+        navigate(`/search?query=${query}`);
+      }
+    }
+  };
   return (
     <div
       className={`header-h ${
         search ? "w-full pl-4" : "header-w"
       } md:w-full md:max-w-lg md:pl-0 mr-4 bg-white transition-width absolute right-0`}
     >
-      <div className="hwfull relative">
+      <form className="hwfull relative" onSubmit={onSubmit}>
         <div className="hwfull border-gray203 border bg-lightgray rounded-full">
-          <input className="hwfull pl-5 pr-9 md:pr-14 font-NanumGothic bg-transparent select-text" />
+          <input
+            ref={inputRef}
+            name="search"
+            className="hwfull pl-5 pr-9 md:pr-14 font-NanumSquareRound bg-transparent select-text"
+            placeholder="검색"
+            disabled={!search}
+          />
         </div>
         <button
           className="header-h header-w rounded-full bg-gray86 flex-none absolute right-0 top-0"
-          onClick={() => setSearch((pre) => !pre)}
+          onClick={() => {
+            setSearch((pre) => !pre);
+          }}
         >
           <Common.SVG name="search" className="p-2 md:p-3" />
         </button>
-      </div>
+      </form>
     </div>
   );
 };
@@ -95,12 +115,12 @@ const Profile: React.FC = () => {
           <button className="header-h header-w bg-blue rounded-full">
             <Common.SVG name="person" className="p-2" />
           </button>
-          <div className="p-5 max-h-0 group-hover:max-h-96 overflow-hidden transition-height absolute top-7 md:top-11 -right-5">
-            <ul className="py-5 pl-10 pr-6 flex flex-col items-end rounded-2xl bg-lightgray drop-shadow-md">
+          <div className="max-h-0 group-hover:max-h-96 overflow-hidden transition-height absolute top-7 md:top-11 -right-5">
+            <ul className="py-5 pl-10 pr-6 m-5 flex flex-col items-end rounded-lg bg-lightgray shadow-md">
               <li>
                 <button
                   onClick={() => navigate("/users")}
-                  className="font-NanumGothicBold whitespace-nowrap text-base"
+                  className="whitespace-nowrap text-base"
                 >
                   내 정보
                 </button>
@@ -109,7 +129,7 @@ const Profile: React.FC = () => {
                 <a
                   ref={logoutRef}
                   href={`${process.env.REACT_APP_API_URL}/auth/logout`}
-                  className="font-NanumGothicBold whitespace-nowrap text-base"
+                  className="whitespace-nowrap text-base"
                 >
                   로그아웃
                 </a>
@@ -120,7 +140,7 @@ const Profile: React.FC = () => {
       ) : (
         <a
           href={`${process.env.REACT_APP_API_URL}/auth/google/login`}
-          className="font-NanumGothicBold md:text-lg"
+          className="font-NanumSquareRoundBold whitespace-nowrap md:text-lg"
         >
           로그인
         </a>

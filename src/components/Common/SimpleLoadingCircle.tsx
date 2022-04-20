@@ -6,7 +6,7 @@ const SimpleLoadingCircle = () => (
     <Helmet>
       <title>Loading...</title>
     </Helmet>
-    <div className="hwfull max-h-48 max-w-48 border-gray-500 border-t-gray-100 border-8 rounded-full animate-spin" />
+    <div className="h-full max-h-52 aspect-square border-gray203 border-t-lightgray border-8 rounded-full animate-spin" />
   </div>
 );
 

@@ -1,14 +1,14 @@
-@import url("https://hangeul.pstatic.net/hangeul_static/css/nanum-gothic.css");
+@import "./font-faces.css";
 
 @tailwind base;
-* {
-  @apply font-NanumGothic select-none;
+*,
+not:input {
+  @apply font-NanumSquareRound select-none;
 }
 html,
 body,
 #root {
   @apply h-full w-full;
-  @apply font-NanumGothic;
 }
 body {
   @apply overscroll-none;
@@ -30,5 +30,8 @@ select {
 }
 .header-w {
   @apply w-7 md:w-11;
+}
+.max-w {
+  @apply w-full max-w-7xl px-4;
 }
 @tailwind utilities;

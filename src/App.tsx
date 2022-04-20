@@ -1,20 +1,15 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Common, Main } from "components";
+import { Common, Home, Main, User } from "components";
 
 const App: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<Main.Layout />}>
         <Route index element={<Navigate to="category" replace />} />
-        <Route path="category" element={<div />} />
-        <Route path="search" element={<div />} />
-        <Route path="users" element={<div />}>
-          <Route index element={<Navigate to="profile" replace />} />
-          <Route path="profile" element={<div />} />
-          <Route path="my-learnings" element={<div />} />
-          <Route path="my-offerings" element={<div />} />
-        </Route>
+        <Route path="category" element={<Home.Category />} />
+        <Route path="search" element={<Home.Search />} />
+        <Route path="users" element={<User.Layout />} />
         <Route path="/courses/:course_id" element={<div />} />
         <Route path="/courses/:course_id/update" element={<div />} />
         <Route path="*" element={<Common.NotFound />} />

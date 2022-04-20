@@ -28,7 +28,7 @@ export default class ErrorBoundary extends React.Component<
           <Helmet>
             <title>GoormEdu | Error</title>
           </Helmet>
-          <h1 className="font-bold">
+          <h1 className="font-NanumSquareRoundBold">
             서버가 불안정합니다. 나중에 다시 이용해주세요.
           </h1>
         </div>

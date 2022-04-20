@@ -8,7 +8,9 @@ const Layout: React.FC = () => {
     <div className="hwfull flex-center flex-col justify-between">
       <div className="w-full flex-center flex-col">
         <Header />
-        <Outlet />
+        <div className="w-full flex-center">
+          <Outlet />
+        </div>
       </div>
       <Footer />
     </div>

@@ -1,4 +1,5 @@
 export type IUserRole = "Student" | "Teacher" | "Admin";
+export type UserNav = "profile" | "my-learnings" | "my-offerings";
 
 export const UserRole = {
   Student: "학생",
@@ -6,20 +7,6 @@ export const UserRole = {
   Admin: "관리자",
   Unknown: "알 수 없음",
 };
-
-interface QuerySuccess<T> {
-  ok: true;
-  result: T;
-}
-
-interface QueryFailure {
-  ok: false;
-  error: string;
-}
-
-export interface QueryResult<T> {
-  data: QuerySuccess<T> | QueryFailure;
-}
 
 export interface IUserPublic {
   id: number;
@@ -31,4 +18,24 @@ export interface IUserDetail extends IUserPublic {
   email: string;
   created_at: Date;
   updated_at: Date;
+}
+
+export interface ILearnRecord {
+  id: number;
+  course_id: number;
+  student_id: number;
+  last_learning_data?: Date;
+  last_lecture_id?: number;
+  count_completion_record: number;
+}
+
+export interface ITeacherRecord {
+  id: number;
+  user_id: number;
+  career: string;
+  accepted: boolean;
+}
+
+export interface CreateTeacherRecord {
+  career: string;
 }

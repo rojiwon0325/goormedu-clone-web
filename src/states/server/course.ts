@@ -1,8 +1,9 @@
 import axios from "axios";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { QueryResult } from "interfaces/query";
-import { ICourse } from "interfaces/course";
-import { api } from "./index";
+import { ICourse, IChapter, ILecture } from "interfaces/course";
+import { api, queryClient } from "./index";
+import { ILearnRecord, ILearnRecordDetail } from "interfaces/user";
 
 export const useAllCourses = (categoryId: number) =>
   useQuery<QueryResult<ICourse[]>>(
@@ -49,4 +50,55 @@ export const useCoursesByOfferings = () =>
       onError: alert,
       onSuccess: (data) => !data.data.ok && alert(data.data.error),
     }
+  );
+
+export const useCourse = (courseId: number) =>
+  useQuery<QueryResult<ICourse>>(["courses", courseId], () =>
+    axios.get(`${api}/courses/${courseId}`)
+  );
+
+export const useLearnRecord = (courseId: number) =>
+  useQuery<QueryResult<ILearnRecord>>(
+    ["courses", courseId, "learn-record"],
+    () =>
+      axios.get(`${api}/courses/${courseId}/learn-record`, {
+        withCredentials: true,
+      })
+  );
+
+export const useLearn = (courseId: number) =>
+  useMutation<QueryResult<ILearnRecordDetail>>(
+    () =>
+      axios.post(
+        `${api}/courses/${courseId}/learn`,
+        {},
+        { withCredentials: true }
+      ),
+    {
+      onError: alert,
+      onSuccess: (data) => {
+        if (data.data.ok) {
+          queryClient.setQueryData(["courses", courseId, "learn-record"], {
+            data: { ok: true, result: data.data.result },
+          });
+        } else {
+          alert(
+            data.data.error === "Jwt Not Authenticated"
+              ? "로그인이 필요합니다."
+              : data.data.error
+          );
+        }
+      },
+    }
+  );
+
+export const useChapters = (courseId: number) =>
+  useQuery<QueryResult<IChapter[]>>(["courses", courseId, "chapters"], () =>
+    axios.get(`${api}/courses/${courseId}/chapters`)
+  );
+
+export const useLectures = (courseId: number, chapterId: number) =>
+  useQuery<QueryResult<ILecture[]>>(
+    ["courses", courseId, "chapters", chapterId, "lectures"],
+    () => axios.get(`${api}/courses/${courseId}/chapters/${chapterId}/lectures`)
   );

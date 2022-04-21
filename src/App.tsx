@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Common, Home, Main, User } from "components";
+import { Common, Course, Home, Main, User } from "components";
 
 const App: React.FC = () => {
   return (
@@ -10,7 +10,7 @@ const App: React.FC = () => {
         <Route path="category" element={<Home.Category />} />
         <Route path="search" element={<Home.Search />} />
         <Route path="users" element={<User.Layout />} />
-        <Route path="courses/:course_id" element={<div />} />
+        <Route path="courses/:course_id" element={<Course.DashBoard />} />
         <Route path="teacher" element={<div />}>
           <Route path="create" element={<div />} />
           <Route path=":course_id" element={<div />} />

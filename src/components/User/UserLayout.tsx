@@ -22,7 +22,7 @@ const UserLayout: React.FC = () => {
   }, [selected]);
 
   return (
-    <div className="max-w md:py-5 flex items-start">
+    <div className="max-w pb-5 md:pt-5 flex items-start">
       <div className="flex-none hidden md:flex">
         <Suspense>
           <UserNav />

@@ -26,7 +26,7 @@ const UserNav: React.FC<{ top?: boolean }> = ({ top = false }) => {
           <div className="text-blue">{UserRole[user?.role ?? "Unknown"]}</div>
         </div>
       )}
-      <Btn title="내 정보" navtype="profile" svgname="settings" />
+      <Btn title="내 정보" navtype="profile" svgname="person-black" />
       <Btn title="수강 목록" navtype="my-learnings" svgname="monitor" />
       {user?.role === "Teacher" ? (
         <Btn title="담당 코스" navtype="my-offerings" svgname="checklist" />

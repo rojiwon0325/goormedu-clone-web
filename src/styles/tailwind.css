@@ -1,14 +1,16 @@
 @import "./font-faces.css";
 
 @tailwind base;
-*,
-not:input {
+* {
   @apply font-NanumSquareRound select-none;
+}
+input {
+  @apply select-text;
 }
 html,
 body,
 #root {
-  @apply h-full w-full;
+  @apply h-full w-full font-NanumSquareRound;
 }
 body {
   @apply overscroll-none;

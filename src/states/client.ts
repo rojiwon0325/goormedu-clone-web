@@ -11,3 +11,12 @@ export const SelectedUserNav = atom<UserNav>({
   key: "SelectedUserNav",
   default: "profile",
 });
+
+interface ICourseLectureList {
+  [key: number]: number[]; // lecture id list
+}
+
+export const CourseLectureList = atom<ICourseLectureList>({
+  key: "CourseLectureList",
+  default: {},
+});

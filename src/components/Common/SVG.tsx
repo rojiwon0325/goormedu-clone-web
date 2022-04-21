@@ -7,6 +7,7 @@ export type SVGName =
   | "shopping-bag"
   | "shopping-cart"
   | "person"
+  | "person-black"
   | "square-four"
   | "settings"
   | "checklist"
@@ -32,6 +33,12 @@ const SVG: React.FC<
       return (
         <Wrap {...rest}>
           <Person />
+        </Wrap>
+      );
+    case "person-black":
+      return (
+        <Wrap {...rest}>
+          <PersonBlack />
         </Wrap>
       );
     case "search":
@@ -151,6 +158,34 @@ const Person = () => (
         <path
           d="M256,298.667c-105.99,0.118-191.882,86.01-192,192C64,502.449,73.551,512,85.333,512h341.333   c11.782,0,21.333-9.551,21.333-21.333C447.882,384.677,361.99,298.784,256,298.667z"
           fill="#ffffff"
+          data-original="#000000"
+        />
+      </g>
+    </g>
+  </svg>
+);
+
+const PersonBlack = () => (
+  <svg
+    version="1.1"
+    x="0"
+    y="0"
+    viewBox="0 0 512 512"
+    xmlSpace="preserve"
+    className="hwfull"
+  >
+    <g>
+      <g>
+        <circle
+          cx="256"
+          cy="128"
+          r="128"
+          fill="#000000"
+          data-original="#000000"
+        />
+        <path
+          d="M256,298.667c-105.99,0.118-191.882,86.01-192,192C64,502.449,73.551,512,85.333,512h341.333   c11.782,0,21.333-9.551,21.333-21.333C447.882,384.677,361.99,298.784,256,298.667z"
+          fill="#000000"
           data-original="#000000"
         />
       </g>

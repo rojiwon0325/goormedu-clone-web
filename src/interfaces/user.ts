@@ -29,6 +29,11 @@ export interface ILearnRecord {
   count_completion_record: number;
 }
 
+export interface ILearnRecordDetail extends ILearnRecord {
+  created_at: Date;
+  updated_at: Date;
+}
+
 export interface ITeacherRecord {
   id: number;
   user_id: number;

@@ -66,7 +66,6 @@ const Search: React.FC = () => {
             name="search"
             className="hwfull pl-5 pr-9 md:pr-14 font-NanumSquareRound bg-transparent select-text"
             placeholder="검색"
-            disabled={!search}
           />
         </div>
         <button

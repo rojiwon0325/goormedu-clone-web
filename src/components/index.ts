@@ -3,6 +3,7 @@ import NotFound from "./Common/NotFound";
 import Provider from "./Common/Provider";
 import SimpleLoadingCircle from "./Common/SimpleLoadingCircle";
 import SVG from "./Common/SVG";
+import DashBoard from "./Course/DashBoard";
 import Category from "./Home/Category";
 import Search from "./Home/Search";
 import Layout from "./Main/Layout";
@@ -27,4 +28,8 @@ export const Home = {
 
 export const User = {
   Layout: UserLayout,
+};
+
+export const Course = {
+  DashBoard,
 };

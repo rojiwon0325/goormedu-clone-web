@@ -30,3 +30,23 @@ export const useCoursesBySearch = (query: string | null) =>
       enabled: !!(query && query.length > 0),
     }
   );
+
+export const useCoursesByLearnings = () =>
+  useQuery<QueryResult<ICourse[]>>(
+    ["courses", "my-learnings"],
+    () => axios.get(`${api}/courses/learning-list`, { withCredentials: true }),
+    {
+      onError: alert,
+      onSuccess: (data) => !data.data.ok && alert(data.data.error),
+    }
+  );
+
+export const useCoursesByOfferings = () =>
+  useQuery<QueryResult<ICourse[]>>(
+    ["courses", "my-offerings"],
+    () => axios.get(`${api}/courses/offering-list`, { withCredentials: true }),
+    {
+      onError: alert,
+      onSuccess: (data) => !data.data.ok && alert(data.data.error),
+    }
+  );

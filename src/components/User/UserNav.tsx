@@ -28,7 +28,9 @@ const UserNav: React.FC<{ top?: boolean }> = ({ top = false }) => {
       )}
       <Btn title="내 정보" navtype="profile" svgname="settings" />
       <Btn title="수강 목록" navtype="my-learnings" svgname="monitor" />
-      <Btn title="담당 강의" navtype="my-offerings" svgname="checklist" />
+      {user?.role === "Teacher" ? (
+        <Btn title="담당 코스" navtype="my-offerings" svgname="checklist" />
+      ) : null}
     </div>
   );
 };

@@ -78,7 +78,7 @@ const TeacherProfile: React.FC<{ open: boolean; teacherId: number }> = ({
             </>
           ) : null}
           <button
-            className={`w-3/4 py-2 px-3 rounded-lg bg-blue text-white ${
+            className={`w-3/4 py-2 px-3 mb-1 rounded-lg bg-blue text-white font-NanumSquareRoundBold shadow-md ${
               teacherData === undefined ? "opacity-50" : ""
             }`}
             onClick={onClick}

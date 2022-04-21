@@ -5,7 +5,7 @@ import { useProfile } from "states/server/user";
 
 const Header: React.FC = () => {
   return (
-    <header className="h-14 md:h-20 w-full flex-center border-gray86 border-b">
+    <header className="h-14 md:h-20 w-full flex-center border-gray86 border-b z-50">
       <div className="h-full max-w flex-center justify-between">
         <div className="h-full flex-1 flex-center justify-between relative">
           <Logo />

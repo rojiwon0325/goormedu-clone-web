@@ -1,5 +1,6 @@
 import { UserRole } from "interfaces/user";
 import React, { Suspense } from "react";
+import { Helmet } from "react-helmet-async";
 import { useProfile } from "states/server/user";
 import TeacherProfile from "./TeacherProfile";
 
@@ -8,6 +9,9 @@ const Profile: React.FC = () => {
   if (userData?.data.ok) {
     return (
       <div className="w-full p-5 md:p-10 flex flex-col border-gray175 border-4 rounded-lg animate-fade-in">
+        <Helmet>
+          <title>내 정보 | GoormEdu</title>
+        </Helmet>
         <h1 className="pb-3 border-gray122 border-b font-NanumSquareRoundExtraBold text-xl">
           내 정보
         </h1>
@@ -28,7 +32,7 @@ const Profile: React.FC = () => {
         <div className="w-full pt-3">
           <Suspense
             fallback={
-              <button className="py-2 px-3 bg-gray229 text-black text-base rounded-lg shadow-md">
+              <button className="py-2 px-3 bg-gray229 text-black font-NanumSquareRoundBold rounded-lg shadow-md">
                 교육자 정보
               </button>
             }

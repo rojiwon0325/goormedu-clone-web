@@ -21,9 +21,7 @@ const CategoryContent = () => {
       <div className="w-full">
         <CategoryNav top />
         <Suspense fallback={<CourseListSkeleton />}>
-          <div className="w-full animate-fade-in">
-            <ContentWrap categoryId={selected.id} />
-          </div>
+          <ContentWrap categoryId={selected.id} />
         </Suspense>
       </div>
     </div>
@@ -40,5 +38,5 @@ const ContentWrap: React.FC<{ categoryId: number }> = ({ categoryId }) => {
   } else if (categoryId !== 0 && categoriedData?.data.ok) {
     return <CourseList courses={categoriedData.data.result} />;
   }
-  return null; // suspense
+  return <CourseListSkeleton />; // suspense
 };

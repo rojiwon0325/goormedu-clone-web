@@ -43,8 +43,8 @@ module.exports = {
         },
       },
       animation: {
-        "fade-in": "0.3s linear 0s fadeIn",
-        "fade-out": "0.3s linear 0s fadeOut",
+        "fade-in": "0.5s linear 0s fadeIn",
+        "fade-out": "0.5s linear 0s fadeOut",
       },
       transitionProperty: {
         height: "height",

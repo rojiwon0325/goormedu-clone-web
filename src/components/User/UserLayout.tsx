@@ -1,6 +1,11 @@
+import { Common } from "components";
+import { UserNav as IUserNav } from "interfaces/user";
 import React, { Suspense, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { SelectedUserNav } from "states/client";
+import { useProfile } from "states/server/user";
+import MyLearnings from "./MyLearnings";
+import MyOfferings from "./MyOfferings";
 import Profile from "./Profile";
 import UserNav from "./UserNav";
 
@@ -31,24 +36,38 @@ const UserLayout: React.FC = () => {
           목록
         </button>
         <div
-          className={`hwfull ${
-            open ? "max-h-screen" : "max-h-0"
-          } md:hidden bg-white transition-all overflow-hidden absolute z-50`}
+          className={`${
+            open ? "h-auto" : "h-0"
+          } md:hidden bg-white overflow-hidden`}
         >
           <Suspense>
             <UserNav top />
           </Suspense>
         </div>
-        <div className="w-full">
-          <Suspense>
-            {selected === "profile" ? <Profile /> : null}
-            {selected === "my-learnings" ? <Profile /> : null}
-            {selected === "my-offerings" ? <Profile /> : null}
-          </Suspense>
-        </div>
+        <DashBoardLayer selected={selected} />
       </div>
     </div>
   );
 };
 
 export default UserLayout;
+
+const DashBoardLayer: React.FC<{ selected: IUserNav }> = ({ selected }) => {
+  const { data: userData } = useProfile();
+  if (userData?.data.ok) {
+    switch (selected) {
+      case "profile":
+        return <Profile />;
+      case "my-learnings":
+        return <MyLearnings />;
+      case "my-offerings":
+        if (userData.data.result.role === "Teacher") {
+          return <MyOfferings />;
+        } else {
+          return <Common.NotFound />;
+        }
+    }
+  } else {
+    return null;
+  }
+};

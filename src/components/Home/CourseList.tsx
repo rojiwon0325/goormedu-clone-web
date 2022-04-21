@@ -6,7 +6,7 @@ import { useUser } from "states/server/user";
 
 const CourseList: React.FC<{ courses: ICourse[] }> = ({ courses }) => {
   return (
-    <div className="w-full py-2 grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+    <div className="w-full py-2 grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 animate-fade-in">
       {courses.map((course) => (
         <Course course={course} key={`course-${course.id}`} />
       ))}
@@ -27,7 +27,7 @@ const Course: React.FC<{ course: ICourse }> = ({
       className="w-full flex flex-col bg-lightgray rounded-lg"
     >
       <div
-        className="w-full aspect-video flex-none bg-white bg-cover rounded-lg"
+        className="w-full aspect-video flex-none bg-white bg-cover bg-center rounded-lg"
         style={{ backgroundImage: `url(${cover_image})` }}
       />
       <div className="h-12 w-full px-1 my-2 overflow-hidden text-base font-semibold">

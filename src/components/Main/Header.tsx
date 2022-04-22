@@ -45,7 +45,7 @@ const Search: React.FC = () => {
   const [search, setSearch] = useState(false);
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    if (!search && inputRef.current) {
+    if (inputRef.current) {
       const query = inputRef.current.value.trim();
       inputRef.current.value = "";
       if (query.length > 0) {

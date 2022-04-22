@@ -67,7 +67,7 @@ const Course: React.FC<{ course: ICourse }> = ({
             onClick={() => navigate(`/courses/${id}`)}
             className="h-full w-24 bg-blue text-white font-NanumSquareRoundBold rounded-lg shadow-md"
           >
-            강의 듣기
+            강의 메인
           </button>
         </div>
         <div className="h-1/3 pb-1">

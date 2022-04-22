@@ -2,8 +2,8 @@ import { ICourse } from "interfaces/course";
 import { ILearnRecord } from "interfaces/user";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { CourseLectureList } from "states/client";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { CourseLectureList, LastLecture } from "states/client";
 import { useCourse, useLearn, useLearnRecord } from "states/server/course";
 import HeaderSkeleton from "./HeaderSkeleton";
 
@@ -34,6 +34,7 @@ const HeaderContent: React.FC<{
   const navigate = useNavigate();
   const { mutate: learn, isLoading } = useLearn(id);
   const courseLectures = useRecoilValue(CourseLectureList);
+  const [lastLecture, setLastLecture] = useRecoilState(LastLecture);
   const [lectures, setLectures] = useState<number[]>([]);
 
   const onClick = useCallback(() => {
@@ -59,9 +60,15 @@ const HeaderContent: React.FC<{
   useEffect(() => {
     const list = courseLectures[id];
     if (list) {
-      setLectures(list);
+      setLectures(list.map((lecture) => lecture.id));
     }
   }, [courseLectures, id]);
+
+  useEffect(() => {
+    if (learnRecord?.last_lecture_id) {
+      setLastLecture({ id: learnRecord.last_lecture_id, title: "" });
+    }
+  }, [learnRecord, setLastLecture]);
 
   return (
     <div className="w-full flex flex-col sm:flex-row justify-between">
@@ -73,6 +80,11 @@ const HeaderContent: React.FC<{
         <div className="h-7 text-lg font-NanumSquareRoundBold overflow-hidden">
           {title}
         </div>
+        {lastLecture ? (
+          <div className="h-7 w-full overflow-hidden">
+            마지막 강의 {lastLecture.title}
+          </div>
+        ) : null}
         <div className="w-full">
           <div className="h-5 text-sm">
             강의 진행도

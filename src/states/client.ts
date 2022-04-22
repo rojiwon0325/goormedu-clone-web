@@ -13,10 +13,20 @@ export const SelectedUserNav = atom<UserNav>({
 });
 
 interface ICourseLectureList {
-  [key: number]: number[]; // lecture id list
+  [key: number]: { id: number; order: number }[]; // lecture id list
 }
 
 export const CourseLectureList = atom<ICourseLectureList>({
   key: "CourseLectureList",
   default: {},
+});
+
+interface ILastLecture {
+  id: number;
+  title: string;
+}
+
+export const LastLecture = atom<ILastLecture>({
+  key: "LastLecture",
+  default: undefined,
 });

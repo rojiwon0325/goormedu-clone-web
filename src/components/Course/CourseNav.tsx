@@ -2,6 +2,8 @@ import { Common } from "components";
 import { IChapter, ILecture } from "interfaces/course";
 import React, { Suspense, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { CourseLectureList, LastLecture } from "states/client";
 import { useChapters, useLectures } from "states/server/course";
 
 const CourseNav: React.FC<{ courseId: number }> = ({ courseId }) => {
@@ -31,7 +33,7 @@ export default CourseNav;
 
 const Chapter: React.FC<{ chapter: IChapter; idx: number }> = ({
   idx,
-  chapter: { id, title, course_id },
+  chapter: { id, title, course_id, order },
 }) => {
   const [open, setOpen] = useState(false);
   return (
@@ -54,18 +56,57 @@ const Chapter: React.FC<{ chapter: IChapter; idx: number }> = ({
         } flex flex-col transition-all overflow-hidden`}
       >
         <Suspense>
-          <LecturesWrap courseId={course_id} chapterId={id} />
+          <LecturesWrap
+            courseId={course_id}
+            chapterId={id}
+            chapterOrder={order}
+          />
         </Suspense>
       </div>
     </>
   );
 };
 
-const LecturesWrap: React.FC<{ courseId: number; chapterId: number }> = ({
-  courseId,
-  chapterId,
-}) => {
+const LecturesWrap: React.FC<{
+  courseId: number;
+  chapterId: number;
+  chapterOrder: number;
+}> = ({ courseId, chapterId, chapterOrder }) => {
   const { data: lectureData } = useLectures(courseId, chapterId);
+  const setCourseLectureList = useSetRecoilState(CourseLectureList);
+  const [lastLecture, setLastLecture] = useRecoilState(LastLecture);
+
+  useEffect(() => {
+    if (lastLecture && lectureData?.data.ok) {
+      const last = lectureData.data.result.find(
+        (lecture) => lecture.id === lastLecture.id
+      );
+      if (last) {
+        setLastLecture({ id: last.id, title: last.title });
+      }
+    }
+  }, [lastLecture, lectureData, setLastLecture]);
+
+  useEffect(() => {
+    if (lectureData?.data.ok && lectureData.data.result.length > 0) {
+      const result: { id: number; order: number }[] = [];
+      const newIds: number[] = [];
+      for (const lecture of lectureData.data.result) {
+        result.push({ id: lecture.id, order: lecture.order * chapterOrder });
+        newIds.push(lecture.id);
+      }
+      setCourseLectureList((prev) => {
+        const prelist = (prev[courseId] ?? []).filter(
+          (lecture) => !newIds.includes(lecture.id)
+        );
+        const newlist = [...prelist, ...result].sort(
+          (a, b) => a.order - b.order
+        ); // 중복 발생을 방지하지만 굉장히 비효율적으로 보임
+        return { ...prev, [courseId]: newlist };
+      });
+    }
+  }, [courseId, lectureData, setCourseLectureList, chapterOrder]);
+
   if (lectureData?.data.ok) {
     return (
       <>
@@ -93,7 +134,9 @@ const Lecture: React.FC<{ lecture: ILecture }> = ({
           name="monitor"
           className="h-full aspect-square mx-1.5 p-1"
         />
-        <div className="px-2 font-NanumSquareRoundBold text-base">{title}</div>
+        <div className="h-full px-2 font-NanumSquareRoundBold text-base overflow-hidden">
+          {title}
+        </div>
       </div>
     </div>
   );

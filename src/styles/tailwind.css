@@ -36,4 +36,7 @@ select {
 .max-w {
   @apply w-full max-w-7xl px-4;
 }
+.course-info-box {
+  @apply flex items-center py-3 px-4 border-gray190 border-t;
+}
 @tailwind utilities;

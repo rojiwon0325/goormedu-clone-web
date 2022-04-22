@@ -1,7 +1,7 @@
 import React, { Suspense, useState } from "react";
 import { useParams } from "react-router-dom";
 import CourseDetail from "./CourseDetail";
-import CourseMain from "./CourseMain";
+import CourseNav from "./CourseNav";
 import Header from "./Header";
 import HeaderSkeleton from "./HeaderSkeleton";
 
@@ -41,15 +41,23 @@ const ContentWrap: React.FC<{ courseId: number }> = ({ courseId }) => {
           onClick={() => setSection("detail")}
           className="h-11 w-40 mr-2 flex-none border-blue border bg-lightgray rounded-lg shadow-md font-NanumSquareRoundBold"
         >
-          강의 소개
+          코스 소개
         </button>
       </div>
       <div className="w-full flex-center items-start">
         <div className="flex-1">
-          <Suspense>
-            {section === "main" ? <CourseMain courseId={courseId} /> : null}
-            {section === "detail" ? <CourseDetail courseId={courseId} /> : null}
-          </Suspense>
+          <div className="w-full border-gray190 border rounded-lg">
+            <div className="p-4 font-NanumSquareRoundBold text-base sm:text-xl">
+              {section === "main" ? "교육 과정" : null}
+              {section === "detail" ? "코스 소개" : null}
+            </div>
+            <Suspense>
+              {section === "main" ? <CourseNav courseId={courseId} /> : null}
+              {section === "detail" ? (
+                <CourseDetail courseId={courseId} />
+              ) : null}
+            </Suspense>
+          </div>
         </div>
       </div>
     </>

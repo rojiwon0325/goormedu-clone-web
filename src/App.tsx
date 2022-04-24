@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Common, Course, Home, Main, User } from "components";
+import { Classroom, Common, Course, Home, Main, User } from "components";
 
 const App: React.FC = () => {
   return (
@@ -17,7 +17,10 @@ const App: React.FC = () => {
         </Route>
         <Route path="*" element={<Common.NotFound />} />
       </Route>
-      <Route path="/classroom/:course_id/:lecture_id" element={<div />} />
+      <Route
+        path="/classroom/:course_id/:lecture_id"
+        element={<Classroom.Layout />}
+      />
     </Routes>
   );
 };

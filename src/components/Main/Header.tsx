@@ -1,7 +1,6 @@
 import { Common } from "components";
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, { Suspense, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useProfile } from "states/server/user";
 
 const Header: React.FC = () => {
   return (
@@ -17,7 +16,7 @@ const Header: React.FC = () => {
               <div className="header-h header-w rounded-full border-gray175 border-t-gray219 border-4 animate-spin" />
             }
           >
-            <Profile />
+            <Common.Profile />
           </Suspense>
         </div>
       </div>
@@ -77,73 +76,6 @@ const Search: React.FC = () => {
           <Common.SVG name="search" className="p-2 md:p-3" />
         </button>
       </form>
-    </div>
-  );
-};
-
-const Profile: React.FC = () => {
-  const navigate = useNavigate();
-  const { data: userData } = useProfile();
-  const logoutRef = useRef<HTMLAnchorElement>(null);
-
-  useEffect(() => {
-    if (
-      userData?.data.ok === false &&
-      userData.data.error !== "Jwt Not Authenticated" &&
-      logoutRef.current
-    ) {
-      logoutRef.current.click();
-    }
-  }, [userData]);
-
-  if (userData === undefined) {
-    return (
-      <a
-        ref={logoutRef}
-        href={`${process.env.REACT_APP_API_URL}/auth/logout`}
-        className="hidden"
-      >
-        로그아웃
-      </a>
-    );
-  }
-  return (
-    <div className="flex items-center flex-none">
-      {userData.data.ok ? (
-        <div className="relative group">
-          <button className="header-h header-w bg-blue rounded-full">
-            <Common.SVG name="person" className="p-2" />
-          </button>
-          <div className="max-h-0 group-hover:max-h-96 overflow-hidden transition-height absolute top-7 md:top-11 -right-5">
-            <ul className="py-5 pl-10 pr-6 m-5 flex flex-col items-end rounded-lg bg-lightgray shadow-md">
-              <li>
-                <button
-                  onClick={() => navigate("/users")}
-                  className="whitespace-nowrap text-base"
-                >
-                  내 정보
-                </button>
-              </li>
-              <li>
-                <a
-                  ref={logoutRef}
-                  href={`${process.env.REACT_APP_API_URL}/auth/logout`}
-                  className="whitespace-nowrap text-base"
-                >
-                  로그아웃
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      ) : (
-        <a
-          href={`${process.env.REACT_APP_API_URL}/auth/google/login`}
-          className="font-NanumSquareRoundBold whitespace-nowrap md:text-lg"
-        >
-          로그인
-        </a>
-      )}
     </div>
   );
 };

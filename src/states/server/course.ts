@@ -1,7 +1,13 @@
 import axios from "axios";
 import { useMutation, useQuery } from "react-query";
 import { QueryResult } from "interfaces/query";
-import { ICourse, IChapter, ILecture } from "interfaces/course";
+import {
+  ICourse,
+  IChapter,
+  ILecture,
+  ICompletionRecord,
+  ILectureDetail,
+} from "interfaces/course";
 import { api, queryClient } from "./index";
 import { ILearnRecord, ILearnRecordDetail } from "interfaces/user";
 
@@ -19,7 +25,7 @@ export const useCoursesByCategory = (categoryId: number) =>
     ["courses", "category", categoryId],
     () => axios.get(`${api}/courses/category/${categoryId}`),
     {
-      enabled: categoryId !== 0,
+      enabled: !!categoryId,
     }
   );
 
@@ -53,8 +59,12 @@ export const useCoursesByOfferings = () =>
   );
 
 export const useCourse = (courseId: number) =>
-  useQuery<QueryResult<ICourse>>(["courses", courseId], () =>
-    axios.get(`${api}/courses/${courseId}`)
+  useQuery<QueryResult<ICourse>>(
+    ["courses", courseId],
+    () => axios.get(`${api}/courses/${courseId}`),
+    {
+      enabled: !!courseId,
+    }
   );
 
 export const useLearnRecord = (courseId: number) =>
@@ -63,7 +73,10 @@ export const useLearnRecord = (courseId: number) =>
     () =>
       axios.get(`${api}/courses/${courseId}/learn-record`, {
         withCredentials: true,
-      })
+      }),
+    {
+      enabled: !!courseId,
+    }
   );
 
 export const useLearn = (courseId: number) =>
@@ -102,3 +115,28 @@ export const useLectures = (courseId: number, chapterId: number) =>
     ["courses", courseId, "chapters", chapterId, "lectures"],
     () => axios.get(`${api}/courses/${courseId}/chapters/${chapterId}/lectures`)
   );
+
+export const useLectureDetail = (courseId: number, lectureId: number) =>
+  useQuery<QueryResult<ILectureDetail>>(
+    ["course", courseId, "lectures", lectureId],
+    () =>
+      axios.get(`${api}/courses/${courseId}/lectures/${lectureId}/detail`, {
+        withCredentials: true,
+      }),
+    {
+      enabled: !!courseId && !!lectureId,
+    }
+  );
+
+export const useCompletionRecord = (courseId: number, lectureId: number) =>
+  useQuery<QueryResult<ICompletionRecord>>(
+    ["courses", courseId, "lectures", lectureId],
+    () =>
+      axios.get(
+        `${api}/courses/${courseId}/lectures/${lectureId}/completion-record`,
+        { withCredentials: true }
+      )
+  );
+
+export const useComplete = (courseId: number, lectureId: number) =>
+  useMutation<QueryResult<ICompletionRecord>>(() => axios.post(""));

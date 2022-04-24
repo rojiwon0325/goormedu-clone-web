@@ -8,6 +8,8 @@ import Category from "./Home/Category";
 import Search from "./Home/Search";
 import Layout from "./Main/Layout";
 import UserLayout from "./User/UserLayout";
+import ClassRoomLayout from "./Classroom/Layout";
+import Profile from "./Common/Profile";
 
 export const Common = {
   ErrorBoundary,
@@ -15,6 +17,7 @@ export const Common = {
   SimpleLoadingCircle,
   NotFound,
   SVG,
+  Profile,
 };
 
 export const Main = {
@@ -32,4 +35,8 @@ export const User = {
 
 export const Course = {
   DashBoard,
+};
+
+export const Classroom = {
+  Layout: ClassRoomLayout,
 };

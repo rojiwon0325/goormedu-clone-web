@@ -12,7 +12,9 @@ export type SVGName =
   | "settings"
   | "checklist"
   | "monitor"
-  | "document";
+  | "document"
+  | "check-circle"
+  | "menu";
 
 const SVG: React.FC<
   { name: SVGName } & React.HTMLAttributes<HTMLDivElement>
@@ -88,6 +90,18 @@ const SVG: React.FC<
       return (
         <Wrap {...rest}>
           <Document />
+        </Wrap>
+      );
+    case "check-circle":
+      return (
+        <Wrap {...rest}>
+          <CheckCircle />
+        </Wrap>
+      );
+    case "menu":
+      return (
+        <Wrap {...rest}>
+          <Menu />
         </Wrap>
       );
     default:
@@ -329,5 +343,20 @@ const Document = () => (
         data-original="#000000"
       />
     </g>
+  </svg>
+);
+
+const CheckCircle = () => (
+  <svg viewBox="0 0 24 24" width="24" height="24">
+    <path d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z" />
+    <path d="M12,16a2.993,2.993,0,0,1-1.987-.752c-.327-.291-.637-.574-.84-.777L6.3,11.647a1,1,0,0,1,1.4-1.426L10.58,13.05c.188.187.468.441.759.7a1,1,0,0,0,1.323,0c.29-.258.57-.512.752-.693L16.3,10.221a1,1,0,1,1,1.4,1.426l-2.879,2.829c-.2.2-.507.48-.833.769A2.99,2.99,0,0,1,12,16Z" />
+  </svg>
+);
+
+const Menu = () => (
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="#ffffff">
+    <rect y="11" width="24" height="2" rx="1" />
+    <rect y="4" width="24" height="2" rx="1" />
+    <rect y="18" width="24" height="2" rx="1" />
   </svg>
 );

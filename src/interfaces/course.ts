@@ -57,3 +57,10 @@ export interface CreateLecture {
   title: string;
   chapter_id: number;
 }
+
+export interface ICompletionRecord {
+  id: number;
+  student_id: number;
+  lecture_id: number;
+  course_id: number;
+}

@@ -217,6 +217,31 @@ export const useLectures = (courseId: number, chapterId: number) =>
     () => axios.get(`${api}/courses/${courseId}/chapters/${chapterId}/lectures`)
   );
 
+export const useLectureCreate = (courseId: number) =>
+  useMutation(
+    (body: FormData) =>
+      axios.post(`${api}/courses/${courseId}/lectures/create`, body, {
+        withCredentials: true,
+      }),
+    {
+      onError: alert,
+      onSuccess: (data: QueryResult<ILectureDetail>) => {
+        if (data.data.ok) {
+          queryClient.invalidateQueries([
+            "courses",
+            courseId,
+            "chapters",
+            data.data.result.chapter_id,
+            "lectures",
+          ]);
+          alert("강의를 생성했습니다.");
+        } else {
+          alert(data.data.error);
+        }
+      },
+    }
+  );
+
 export const useLectureDetail = (courseId: number, lectureId: number) =>
   useQuery<QueryResult<ILectureDetail>>(
     ["course", courseId, "lectures", lectureId],
@@ -246,6 +271,40 @@ export const useLectureUpdate = (courseId: number, lectureId: number) =>
             data.data.result
           );
           alert("강의가 수정되었습니다.");
+        } else {
+          alert(data.data.error);
+        }
+      },
+    }
+  );
+
+export const useLectureDelete = (courseId: number, lectureId: number) =>
+  useMutation(
+    () =>
+      axios.post(
+        `${api}/courses/${courseId}/lectures/${lectureId}/delete`,
+        {},
+        { withCredentials: true }
+      ),
+    {
+      onError: alert,
+      onSuccess: (
+        data: QueryResult<{
+          id: number;
+          teacher_id: number;
+          course_id: number;
+          chapter_id: number;
+        }>
+      ) => {
+        if (data.data.ok) {
+          queryClient.invalidateQueries([
+            "courses",
+            courseId,
+            "chapters",
+            data.data.result.chapter_id,
+            "lectures",
+          ]);
+          alert("강의를 제거했습니다.");
         } else {
           alert(data.data.error);
         }

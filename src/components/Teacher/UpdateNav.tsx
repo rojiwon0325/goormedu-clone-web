@@ -104,17 +104,22 @@ const LectureWrap: React.FC<{ courseId: number; chapterId: number }> = ({
   chapterId,
 }) => {
   const { data } = useLectures(courseId, chapterId);
-  if (data?.data.ok) {
-    return (
-      <>
-        {data.data.result.map((lecture) => (
-          <Lecture lecture={lecture} key={`lecture-${lecture.id}`} />
-        ))}
-      </>
-    );
-  } else {
-    return null;
-  }
+  const [lectures, setLectures] = useState<ILecture[]>([]);
+
+  useEffect(() => {
+    if (data?.data.ok) {
+      const newlist = [...data.data.result];
+      setLectures(newlist.sort((a, b) => a.order - b.order));
+    }
+  }, [data]);
+
+  return (
+    <>
+      {lectures.map((lecture) => (
+        <Lecture lecture={lecture} key={`lecture-${lecture.id}`} />
+      ))}
+    </>
+  );
 };
 
 const Lecture: React.FC<{ lecture: ILecture }> = ({

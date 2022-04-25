@@ -15,7 +15,7 @@ const MyOfferings: React.FC = () => {
       </div>
       <Link
         to="/teacher/create"
-        className="py-2 px-3 mt-2 bg-blue text-white rounded-lg"
+        className="block max-w-fit py-2 px-3 mt-2 bg-blue text-white rounded-lg"
       >
         새 코스 추가
       </Link>

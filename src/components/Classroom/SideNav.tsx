@@ -1,23 +1,29 @@
 import { Common } from "components";
 import CourseNav from "components/Course/CourseNav";
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const SideNav: React.FC<{
   courseId: number;
   courseTitle: string;
   open: boolean;
 }> = ({ courseId, courseTitle, open }) => {
-  const [active, setActive] = useState(true);
+  const { lecture_id } = useParams();
+  const [active, setActive] = useState(!open);
+
+  useEffect(() => {
+    setActive(true);
+  }, [lecture_id]);
 
   return (
     <div
       className={`hwfull ${
-        open === active ? "visible transition-none" : "invisible"
+        active === open ? "visible transition-none" : "invisible"
       } bg-black bg-opacity-50 transition-all duration-150 absolute top-0 left-0 z-20`}
     >
       <div
         className={`h-full flex flex-col bg-lightindigo ${
-          open === active ? "w-full sm:w-96" : "w-0"
+          active === open ? "w-full sm:w-96" : "w-0"
         } transition-width overflow-hidden`}
       >
         <div className="h-11 w-full px-2 -mb-px flex items-center bg-indigo">

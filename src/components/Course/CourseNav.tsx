@@ -156,12 +156,10 @@ const Lecture: React.FC<{ lecture: ILecture; darkmode: boolean }> = ({
         darkmode
           ? "bg-indigo border-darkindigo hover:bg-darkblue"
           : "bg-gray229 border-gray190 hover:bg-gray219"
-      }`}
+      }  cursor-pointer`}
+      onClick={() => navigate(`/classroom/${course_id}/${id}`)}
     >
-      <div
-        onClick={() => navigate(`/classroom/${course_id}/${id}`)}
-        className="hwfull flex cursor-pointer"
-      >
+      <div className="hwfull flex">
         <Suspense
           fallback={
             <Common.SVG

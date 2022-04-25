@@ -9,7 +9,14 @@ import Search from "./Home/Search";
 import Layout from "./Main/Layout";
 import UserLayout from "./User/UserLayout";
 import ClassRoomLayout from "./Classroom/Layout";
+import TeacherLayout from "./Teacher/Layout";
 import Profile from "./Common/Profile";
+import CreateDashBoard from "./Teacher/CreateDashBoard";
+import UpdateDashBoard from "./Teacher/UpdateDashBoard";
+import CourseDashBoard from "./Teacher/CourseDashBoard";
+import ChapterDashBoard from "./Teacher/ChapterDashBoard";
+import LectureDashBoard from "./Teacher/LectureDashBoard";
+import DnDItem from "./Common/DnDItem";
 
 export const Common = {
   ErrorBoundary,
@@ -18,6 +25,7 @@ export const Common = {
   NotFound,
   SVG,
   Profile,
+  DnDItem,
 };
 
 export const Main = {
@@ -39,4 +47,13 @@ export const Course = {
 
 export const Classroom = {
   Layout: ClassRoomLayout,
+};
+
+export const Teacher = {
+  Layout: TeacherLayout,
+  CreateDashBoard,
+  UpdateDashBoard,
+  CourseDashBoard,
+  ChapterDashBoard,
+  LectureDashBoard,
 };

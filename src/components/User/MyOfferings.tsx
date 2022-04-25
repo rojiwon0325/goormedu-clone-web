@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 import OfferingList from "./OfferingList";
 import OfferingListSkeleton from "./OfferingListSkeleton";
 
@@ -12,9 +13,12 @@ const MyOfferings: React.FC = () => {
       <div className="pb-1 border-gray86 border-b font-NanumSquareRoundBold text-lg">
         담당 코스
       </div>
-      <button className="py-2 px-3 mt-2 bg-blue text-white rounded-lg">
+      <Link
+        to="/teacher/create"
+        className="py-2 px-3 mt-2 bg-blue text-white rounded-lg"
+      >
         새 코스 추가
-      </button>
+      </Link>
       <Suspense fallback={<OfferingListSkeleton />}>
         <OfferingList />
       </Suspense>

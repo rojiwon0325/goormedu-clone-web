@@ -7,6 +7,8 @@ import {
   ILecture,
   ICompletionRecord,
   ILectureDetail,
+  ICourseDetail,
+  IChapterDetail,
 } from "interfaces/course";
 import { api, queryClient } from "./index";
 import { ILearnRecord, ILearnRecordDetail } from "interfaces/user";
@@ -67,6 +69,39 @@ export const useCourse = (courseId: number) =>
     }
   );
 
+export const useCourseCreate = () =>
+  useMutation(
+    (body: FormData) =>
+      axios.post(`${api}/courses/create`, body, { withCredentials: true }),
+    {
+      onSuccess: (data: QueryResult<ICourseDetail>) => {
+        if (data.data.ok) {
+          queryClient.setQueryData(["courses", data.data.result.id], data);
+          queryClient.invalidateQueries(["courses", "my-offerings"]);
+        }
+      },
+    }
+  );
+
+export const useCourseUpdate = (courseId: number) =>
+  useMutation(
+    (body: FormData) =>
+      axios.post(`${api}/courses/${courseId}/update`, body, {
+        withCredentials: true,
+      }),
+    {
+      onError: alert,
+      onSuccess: (data: QueryResult<ICourseDetail>) => {
+        if (data.data.ok) {
+          queryClient.invalidateQueries(["courses"]);
+          alert("수정되었습니다.");
+        } else {
+          alert(data.data.error);
+        }
+      },
+    }
+  );
+
 export const useLearnRecord = (courseId: number) =>
   useQuery<QueryResult<ILearnRecord>>(
     ["courses", courseId, "learn-record"],
@@ -110,6 +145,72 @@ export const useChapters = (courseId: number) =>
     axios.get(`${api}/courses/${courseId}/chapters`)
   );
 
+export const useChapterCreate = (courseId: number) =>
+  useMutation(
+    (body: { title: string }) =>
+      axios.post(`${api}/courses/${courseId}/chapters/create`, body, {
+        withCredentials: true,
+      }),
+    {
+      onError: alert,
+      onSuccess: (data: QueryResult<IChapterDetail>) => {
+        if (data.data.ok) {
+          queryClient.invalidateQueries([
+            "courses",
+            data.data.result.course_id,
+            "chapters",
+          ]);
+          alert("챕터를 생성했습니다.");
+        } else {
+          alert(data.data.error);
+        }
+      },
+    }
+  );
+
+export const useChapterDelete = (courseId: number, chapterId: number) =>
+  useMutation(
+    () =>
+      axios.post(
+        `${api}/courses/${courseId}/chapters/${chapterId}/delete`,
+        {},
+        {
+          withCredentials: true,
+        }
+      ),
+    {
+      onError: alert,
+      onSuccess: (data: QueryResult<{ id: number; teacher_id: number }>) => {
+        if (data.data.ok) {
+          queryClient.invalidateQueries(["courses", courseId, "chapters"]);
+          alert("챕터를 삭제했습니다.");
+        } else {
+          alert(data.data.error);
+        }
+      },
+    }
+  );
+
+export const useChapterUpdate = (courseId: number, chapterId: number) =>
+  useMutation(
+    (body: { title: string }) =>
+      axios.post(
+        `${api}/courses/${courseId}/chapters/${chapterId}/update`,
+        body,
+        { withCredentials: true }
+      ),
+    {
+      onSuccess: (data: QueryResult<IChapterDetail>) => {
+        if (data.data.ok) {
+          queryClient.invalidateQueries(["courses", courseId, "chapters"]);
+          alert("챕터가 수정되었습니다.");
+        } else {
+          alert(data.data.error);
+        }
+      },
+    }
+  );
+
 export const useLectures = (courseId: number, chapterId: number) =>
   useQuery<QueryResult<ILecture[]>>(
     ["courses", courseId, "chapters", chapterId, "lectures"],
@@ -125,6 +226,30 @@ export const useLectureDetail = (courseId: number, lectureId: number) =>
       }),
     {
       enabled: !!courseId && !!lectureId,
+    }
+  );
+
+export const useLectureUpdate = (courseId: number, lectureId: number) =>
+  useMutation(
+    (body: FormData) =>
+      axios.post(
+        `${api}/courses/${courseId}/lectures/${lectureId}/update`,
+        body,
+        { withCredentials: true }
+      ),
+    {
+      onError: alert,
+      onSuccess: (data: QueryResult<ILectureDetail>) => {
+        if (data.data.ok) {
+          queryClient.setQueryData(
+            ["courses", courseId, "lectures", lectureId],
+            data.data.result
+          );
+          alert("강의가 수정되었습니다.");
+        } else {
+          alert(data.data.error);
+        }
+      },
     }
   );
 

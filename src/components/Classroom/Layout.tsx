@@ -1,5 +1,4 @@
 import React, { Suspense, useEffect } from "react";
-import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCourse, useLectureDetail } from "states/server/course";
 import Footer from "./Footer";
@@ -50,11 +49,6 @@ const APILayer: React.FC<{ courseId: number; lectureId: number }> = ({
   if (courseData?.data.ok && lectureData?.data.ok) {
     return (
       <div className="hwfull flex flex-col relative">
-        <Helmet>
-          <title>
-            {lectureData.data.result.title} | {courseData.data.result.title}
-          </title>
-        </Helmet>
         <Header
           lectureTitle={lectureData.data.result.title}
           courseId={courseData.data.result.id}

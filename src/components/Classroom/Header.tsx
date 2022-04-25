@@ -1,5 +1,7 @@
 import { Common } from "components";
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
+import { useParams } from "react-router-dom";
 import SideNav from "./SideNav";
 
 const Header: React.FC<{
@@ -7,9 +9,20 @@ const Header: React.FC<{
   courseTitle: string;
   lectureTitle: string;
 }> = ({ courseId, courseTitle, lectureTitle }) => {
+  const { lecture_id } = useParams();
   const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    setActive(false);
+  }, [lecture_id]);
+
   return (
     <>
+      <Helmet>
+        <title>
+          {lectureTitle} | {courseTitle}
+        </title>
+      </Helmet>
       <SideNav courseId={courseId} courseTitle={courseTitle} open={active} />
       <div className="h-11 w-full px-2 bg-lightindigo flex justify-between flex-none absolute top-0">
         <div className="h-full w-1/2 flex items-center justify-start">

@@ -1,6 +1,14 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Classroom, Common, Course, Home, Main, User } from "components";
+import {
+  Classroom,
+  Common,
+  Course,
+  Home,
+  Main,
+  Teacher,
+  User,
+} from "components";
 
 const App: React.FC = () => {
   return (
@@ -11,9 +19,19 @@ const App: React.FC = () => {
         <Route path="search" element={<Home.Search />} />
         <Route path="users" element={<User.Layout />} />
         <Route path="courses/:course_id" element={<Course.DashBoard />} />
-        <Route path="teacher" element={<div />}>
-          <Route path="create" element={<div />} />
-          <Route path=":course_id" element={<div />} />
+        <Route path="teacher" element={<Teacher.Layout />}>
+          <Route path="create" element={<Teacher.CreateDashBoard />} />
+          <Route path=":course_id" element={<Teacher.UpdateDashBoard />}>
+            <Route index element={<Teacher.CourseDashBoard />} />
+            <Route
+              path="chapters/:chapter_id"
+              element={<Teacher.ChapterDashBoard />}
+            />
+            <Route
+              path="lectures/:lecture_id"
+              element={<Teacher.LectureDashBoard />}
+            />
+          </Route>
         </Route>
         <Route path="*" element={<Common.NotFound />} />
       </Route>

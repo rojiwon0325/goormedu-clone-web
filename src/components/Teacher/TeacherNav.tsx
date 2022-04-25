@@ -22,7 +22,7 @@ const TeacherNav: React.FC = () => {
       </div>
       <div className="w-full p-2 border-blue border-t">
         <Suspense>
-          <div className="max-h-96 w-full flex-center flex-col overflow-scroll">
+          <div className="w-full flex-center flex-col">
             <OfferingList />
           </div>
         </Suspense>

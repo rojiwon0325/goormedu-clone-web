@@ -207,9 +207,18 @@ const LecturesPart: React.FC<{ courseId: number; chapterId: number }> = ({
   }, [data]);
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      {lectures.map((lecture, i) => renderLecture(lecture, i))}
-    </DndProvider>
+    <div className="w-full flex flex-1 flex-col justify-between">
+      <div className="w-full">
+        <DndProvider backend={HTML5Backend}>
+          {lectures.map((lecture, i) => renderLecture(lecture, i))}
+        </DndProvider>
+      </div>
+      <div className="pt-14 w-full flex justify-center">
+        <div className="py-2 px-5 bg-gray190 hover:bg-gray219 rounded-lg max-w-fit">
+          강의 순서 변경
+        </div>
+      </div>
+    </div>
   );
 };
 

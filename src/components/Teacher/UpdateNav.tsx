@@ -50,10 +50,12 @@ const UpdateNav: React.FC<{ courseId: number }> = ({ courseId }) => {
 
   return (
     <>
-      <div className="h-96 w-full mb-2 overflow-scroll border-gray219 border">
-        <DndProvider backend={HTML5Backend}>
-          {chapters.map((chapter, i) => renderChapter(chapter, i))}
-        </DndProvider>
+      <div className="w-full flex-1">
+        <div className="w-full mb-2 border-gray219 border">
+          <DndProvider backend={HTML5Backend}>
+            {chapters.map((chapter, i) => renderChapter(chapter, i))}
+          </DndProvider>
+        </div>
       </div>
       <button className="py-2 px-3 bg-gray190 hover:bg-gray219 rounded-lg">
         챕터 순서 저장
@@ -72,7 +74,7 @@ const Chapter: React.FC<{ chapter: IChapter; index: number }> = ({
   const [active, setActive] = useState(false);
 
   return (
-    <div className="w-full border-gray190 border-b">
+    <div className={`w-full border-gray190 ${index === 0 ? "" : "border-t"}`}>
       <div className="w-full p-1 flex hover:bg-skyblue">
         <div className="pr-2">{index < 9 ? "0" + (index + 1) : index + 1}</div>
         <div

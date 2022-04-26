@@ -1,5 +1,6 @@
 @font-face {
   font-family: "NanumSquareRound";
+  font-display: block;
   src: url(./font/NanumSquareRoundR.eot);
   src: url(./font/NanumSquareRoundR.eot?#iefix) format("embedded-opentype"),
     url(./font/NanumSquareRoundR.woff2) format("woff2"),
@@ -9,6 +10,7 @@
 
 @font-face {
   font-family: "NanumSquareRoundB";
+  font-display: block;
   src: url(./font/NanumSquareRoundB.eot);
   src: url(./font/NanumSquareRoundB.eot?#iefix) format("embedded-opentype"),
     url(./font/NanumSquareRoundB.woff2) format("woff2"),
@@ -18,6 +20,7 @@
 
 @font-face {
   font-family: "NanumSquareRoundEB";
+  font-display: block;
   src: url(./font/NanumSquareRoundEB.eot);
   src: url(./font/NanumSquareRoundEB.eot?#iefix) format("embedded-opentype"),
     url(./font/NanumSquareRoundEB.woff2) format("woff2"),
@@ -27,6 +30,7 @@
 
 @font-face {
   font-family: "NanumSquareRoundL";
+  font-display: block;
   src: url(./font/NanumSquareRoundL.eot);
   src: url(./font/NanumSquareRoundL.eot?#iefix) format("embedded-opentype"),
     url(./font/NanumSquareRoundL.woff2) format("woff2"),

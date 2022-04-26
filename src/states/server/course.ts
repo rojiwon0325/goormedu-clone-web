@@ -266,13 +266,7 @@ export const useLectureUpdate = (courseId: number, lectureId: number) =>
       onError: alert,
       onSuccess: (data: QueryResult<ILectureDetail>) => {
         if (data.data.ok) {
-          queryClient.invalidateQueries([
-            "courses",
-            courseId,
-            "chapters",
-            data.data.result.chapter_id,
-            "lectures",
-          ]);
+          queryClient.invalidateQueries(["courses", courseId, "chapters"]);
           queryClient.setQueryData(
             ["courses", courseId, "lectures", lectureId],
             data.data.result

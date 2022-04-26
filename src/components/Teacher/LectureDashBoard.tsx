@@ -78,7 +78,7 @@ const Content: React.FC<{ courseId: number; lectureId: number }> = ({
     }
     body.append("title", title);
     for (const [key, val] of Object.entries(rest)) body.append(key, val + "");
-    if (content) body.append("content", content);
+    if (content && content.length > 0) body.append("content", content);
     if (video_url[0]) body.append("lecture_video", video_url[0]);
     if (updateLoading || deleteLoading) {
       alert("잠시만 기다려주세요.");

@@ -20,13 +20,3 @@ export const CourseLectureList = atom<ICourseLectureList>({
   key: "CourseLectureList",
   default: {},
 });
-
-interface ILastLecture {
-  id: number;
-  title: string;
-}
-
-export const LastLecture = atom<ILastLecture>({
-  key: "LastLecture",
-  default: undefined,
-});

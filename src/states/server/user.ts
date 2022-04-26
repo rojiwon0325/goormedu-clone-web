@@ -53,7 +53,7 @@ export const useCreateTeacherRecord = () =>
               data: { ok: true, result: data.data.result },
             }
           );
-          alert("생성되었습니다.");
+          alert("신청되었습니다.");
         } else {
           alert(data.data.error);
         }

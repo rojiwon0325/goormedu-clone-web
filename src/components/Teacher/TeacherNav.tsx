@@ -6,7 +6,7 @@ const TeacherNav: React.FC = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   return (
-    <div className="m-4 mr-0 flex-center flex-col justify-start border-blue border">
+    <div className="m-4 mr-0 flex-center flex-col justify-start border-blue border flex-none">
       <button
         onClick={() => navigate("/teacher/create")}
         className={`w-full py-2 ${

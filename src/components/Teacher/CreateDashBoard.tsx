@@ -41,7 +41,7 @@ const CreateDashBoard: React.FC = () => {
     if (!isLoading) {
       mutate(body, {
         onSuccess: ({ data }) =>
-          data.ok ? navigate("/users/my-offerings") : alert(data.error),
+          data.ok ? navigate("/users") : alert(data.error),
         onError: (error) => alert(error),
       });
     }

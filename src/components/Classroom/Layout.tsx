@@ -58,7 +58,7 @@ const APILayer: React.FC<{ courseId: number; lectureId: number }> = ({
           {lectureData.data.result.video_url ? (
             <Player
               key={`video-${lectureData.data.result.id}`}
-              videoUrl={"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"}
+              videoUrl={lectureData.data.result.video_url}
               heightFull={!lectureData.data.result.content}
             />
           ) : null}

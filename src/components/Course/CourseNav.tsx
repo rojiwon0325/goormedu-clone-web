@@ -109,6 +109,19 @@ const LecturesWrap: React.FC<{
     }
   }, [lastLecture, lecturesData, setLastLecture]);
 
+  /**
+ * 
+  useEffect(() => {
+    if (lastLecture && lecturesData?.data.ok) {
+      const last = lecturesData.data.result.find(
+        (lecture) => lecture.id === lastLecture.id
+      );
+      if (last) {
+        setLastLecture({ id: last.id, title: last.title });
+      }
+    }
+  }, [lastLecture, lecturesData, setLastLecture]);
+
   useEffect(() => {
     if (lecturesData?.data.ok) {
       const lecturelist = lecturesData.data.result.sort(
@@ -119,7 +132,29 @@ const LecturesWrap: React.FC<{
         return { ...prev, [courseId]: lecturelist };
       });
     }
-  }, [courseId, lecturesData, setCourseLectureList]);
+  }, [courseId, lecturesData, ]);
+ */
+
+  useEffect(() => {
+    if (lecturesData?.data.ok) {
+      const lecturelist = lecturesData.data.result;
+      setLectures(lecturelist);
+      const result = lecturelist.map(({ id, order }) => ({
+        id,
+        order: order * chapterOrder,
+      }));
+      const newIds = lecturelist.map(({ id }) => id);
+      setCourseLectureList((prev) => {
+        const prelist = (prev[courseId] ?? []).filter(
+          (lecture) => !newIds.includes(lecture.id)
+        );
+        const newlist = [...prelist, ...result].sort(
+          (a, b) => a.order - b.order
+        ); // 중복 발생을 방지하지만 굉장히 비효율적으로 보임
+        return { ...prev, [courseId]: newlist };
+      });
+    }
+  }, [chapterOrder, courseId, lecturesData, setCourseLectureList]);
 
   return (
     <>

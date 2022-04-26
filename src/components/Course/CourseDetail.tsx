@@ -27,7 +27,7 @@ const CourseDetail: React.FC<{ courseId: number }> = ({ courseId }) => {
           </div>
           <div className="course-info-box">
             <Common.SVG name="square-four" className="h-5 w-5 flex-none" />
-            <div className="hidden sm:block flex-none pl-3 pr-2 font-NanumSquareRoundBold">
+            <div className="hidden sm:block flex-none pl-3 pr-1.5 font-NanumSquareRoundBold">
               카테고리
             </div>
             <Suspense>

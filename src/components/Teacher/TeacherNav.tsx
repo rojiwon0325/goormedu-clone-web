@@ -17,7 +17,7 @@ const TeacherNav: React.FC = () => {
       >
         새 코스 생성
       </button>
-      <div className="w-full text-center py-2 border-blue border-t">
+      <div className="w-full text-center p-2 border-blue border-t">
         기존 코스 수정
       </div>
       <div className="w-full p-2 border-blue border-t">

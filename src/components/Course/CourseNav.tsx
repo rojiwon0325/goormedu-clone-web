@@ -93,56 +93,45 @@ const LecturesWrap: React.FC<{
   chapterOrder: number;
   darkmode: boolean;
 }> = ({ courseId, chapterId, chapterOrder, darkmode }) => {
-  const { data: lectureData } = useLectures(courseId, chapterId);
+  const { data: lecturesData } = useLectures(courseId, chapterId);
+  const [lectures, setLectures] = useState<ILecture[]>([]);
   const setCourseLectureList = useSetRecoilState(CourseLectureList);
   const [lastLecture, setLastLecture] = useRecoilState(LastLecture);
 
   useEffect(() => {
-    if (lastLecture && lectureData?.data.ok) {
-      const last = lectureData.data.result.find(
+    if (lastLecture && lecturesData?.data.ok) {
+      const last = lecturesData.data.result.find(
         (lecture) => lecture.id === lastLecture.id
       );
       if (last) {
         setLastLecture({ id: last.id, title: last.title });
       }
     }
-  }, [lastLecture, lectureData, setLastLecture]);
+  }, [lastLecture, lecturesData, setLastLecture]);
 
   useEffect(() => {
-    if (lectureData?.data.ok && lectureData.data.result.length > 0) {
-      const result: { id: number; order: number }[] = [];
-      const newIds: number[] = [];
-      for (const lecture of lectureData.data.result) {
-        result.push({ id: lecture.id, order: lecture.order * chapterOrder });
-        newIds.push(lecture.id);
-      }
+    if (lecturesData?.data.ok) {
+      const lecturelist = lecturesData.data.result.sort(
+        (a, b) => a.order - b.order
+      );
+      setLectures(lecturelist);
       setCourseLectureList((prev) => {
-        const prelist = (prev[courseId] ?? []).filter(
-          (lecture) => !newIds.includes(lecture.id)
-        );
-        const newlist = [...prelist, ...result].sort(
-          (a, b) => a.order - b.order
-        ); // 중복 발생을 방지하지만 굉장히 비효율적으로 보임
-        return { ...prev, [courseId]: newlist };
+        return { ...prev, [courseId]: lecturelist };
       });
     }
-  }, [courseId, lectureData, setCourseLectureList, chapterOrder]);
+  }, [courseId, lecturesData, setCourseLectureList]);
 
-  if (lectureData?.data.ok) {
-    return (
-      <>
-        {lectureData.data.result.map((lecture) => (
-          <Lecture
-            key={`lecture-${lecture.id}`}
-            lecture={lecture}
-            darkmode={darkmode}
-          />
-        ))}
-      </>
-    );
-  } else {
-    return null;
-  }
+  return (
+    <>
+      {lectures.map((lecture) => (
+        <Lecture
+          key={`lecture-${lecture.id}`}
+          lecture={lecture}
+          darkmode={darkmode}
+        />
+      ))}
+    </>
+  );
 };
 
 const Lecture: React.FC<{ lecture: ILecture; darkmode: boolean }> = ({

@@ -132,7 +132,7 @@ const CreateDashBoard: React.FC = () => {
             </div>
             <textarea
               {...descriptionRegister}
-              placeholder="강의 소개"
+              placeholder="코스 소개"
               className="w-full p-2 my-2 placeholder:text-darkgray border-gray229 border-4 rounded-lg"
             />
             <div className="w-full flex-center">

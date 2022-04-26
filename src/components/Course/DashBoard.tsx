@@ -30,7 +30,7 @@ const ContentWrap: React.FC<{ courseId: number }> = ({ courseId }) => {
   const [section, setSection] = useState<ICourseSection>("main");
   return (
     <>
-      <div className="w-full py-2 md:py-4 flex overflow-x-scroll">
+      <div className="w-full py-2 md:py-4 flex overflow-x-auto">
         <button
           onClick={() => setSection("main")}
           className="h-11 w-40 mr-2 flex-none border-blue border bg-lightgray rounded-lg shadow-md font-NanumSquareRoundBold"

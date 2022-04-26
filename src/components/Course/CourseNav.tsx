@@ -109,32 +109,6 @@ const LecturesWrap: React.FC<{
     }
   }, [lastLecture, lecturesData, setLastLecture]);
 
-  /**
- * 
-  useEffect(() => {
-    if (lastLecture && lecturesData?.data.ok) {
-      const last = lecturesData.data.result.find(
-        (lecture) => lecture.id === lastLecture.id
-      );
-      if (last) {
-        setLastLecture({ id: last.id, title: last.title });
-      }
-    }
-  }, [lastLecture, lecturesData, setLastLecture]);
-
-  useEffect(() => {
-    if (lecturesData?.data.ok) {
-      const lecturelist = lecturesData.data.result.sort(
-        (a, b) => a.order - b.order
-      );
-      setLectures(lecturelist);
-      setCourseLectureList((prev) => {
-        return { ...prev, [courseId]: lecturelist };
-      });
-    }
-  }, [courseId, lecturesData, ]);
- */
-
   useEffect(() => {
     if (lecturesData?.data.ok) {
       const lecturelist = lecturesData.data.result;

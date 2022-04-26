@@ -13,21 +13,21 @@ const CourseDetail: React.FC<{ courseId: number }> = ({ courseId }) => {
         <div className="w-full bg-lightgray border-gray190 md:border md:border-t-0">
           <div className="course-info-box">
             <Common.SVG name="cap" className="h-5 w-5 flex-none" />
-            <div className="hidden sm:block pl-3 pr-5 font-NanumSquareRoundBold">
+            <div className="hidden sm:block flex-none pl-3 pr-5 font-NanumSquareRoundBold">
               난이도
             </div>
             <div className="px-3">{courseData.data.result.level}</div>
           </div>
           <div className="course-info-box">
             <Common.SVG name="document" className="h-5 w-5 flex-none" />
-            <div className="hidden sm:block pl-3 font-NanumSquareRoundBold">
+            <div className="hidden sm:block flex-none pl-3 font-NanumSquareRoundBold">
               강의 설명
             </div>
             <div className="px-3">{courseData.data.result.description}</div>
           </div>
           <div className="course-info-box">
             <Common.SVG name="square-four" className="h-5 w-5 flex-none" />
-            <div className="hidden sm:block pl-3 pr-1 font-NanumSquareRoundBold">
+            <div className="hidden sm:block flex-none pl-3 pr-2 font-NanumSquareRoundBold">
               카테고리
             </div>
             <Suspense>
@@ -36,7 +36,7 @@ const CourseDetail: React.FC<{ courseId: number }> = ({ courseId }) => {
           </div>
           <div className="course-info-box">
             <Common.SVG name="person-black" className="h-5 w-5 flex-none" />
-            <div className="hidden sm:block pl-3 pr-1 font-NanumSquareRoundBold">
+            <div className="hidden sm:block flex-none pl-3 pr-1 font-NanumSquareRoundBold">
               교육자 정보
             </div>
             <Suspense>

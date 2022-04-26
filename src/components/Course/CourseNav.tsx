@@ -2,8 +2,8 @@ import { Common } from "components";
 import { IChapter, ILecture } from "interfaces/course";
 import React, { Suspense, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { CourseLectureList, LastLecture } from "states/client";
+import { useSetRecoilState } from "recoil";
+import { CourseLectureList } from "states/client";
 import {
   useChapters,
   useCompletionRecord,
@@ -96,18 +96,6 @@ const LecturesWrap: React.FC<{
   const { data: lecturesData } = useLectures(courseId, chapterId);
   const [lectures, setLectures] = useState<ILecture[]>([]);
   const setCourseLectureList = useSetRecoilState(CourseLectureList);
-  const [lastLecture, setLastLecture] = useRecoilState(LastLecture);
-
-  useEffect(() => {
-    if (lastLecture && lecturesData?.data.ok) {
-      const last = lecturesData.data.result.find(
-        (lecture) => lecture.id === lastLecture.id
-      );
-      if (last) {
-        setLastLecture({ id: last.id, title: last.title });
-      }
-    }
-  }, [lastLecture, lecturesData, setLastLecture]);
 
   useEffect(() => {
     if (lecturesData?.data.ok) {

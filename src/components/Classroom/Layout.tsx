@@ -33,14 +33,14 @@ const APILayer: React.FC<{ courseId: number; lectureId: number }> = ({
   useEffect(() => {
     if (courseData?.data.ok === false) {
       alert(courseData.data.error);
-      navigate("/");
+      navigate(-1);
     } else if (lectureData?.data.ok === false) {
       alert(
         lectureData.data.error === "Jwt Not Authenticated"
           ? "로그인이 필요합니다."
           : lectureData.data.error
       );
-      navigate("/");
+      navigate(-1);
     } else {
       // LR 수정, 최근 학습일자, 최근들은 강의 정보 수정
     }

@@ -67,6 +67,7 @@ const Content: React.FC<{ courseId: number; lectureId: number }> = ({
       alert("강의 제목은 필수 입니다.");
       return;
     }
+    body.append("title", title);
     for (const [key, val] of Object.entries(rest)) body.append(key, val + "");
     if (content) body.append("content", content);
     if (video_url[0]) body.append("lecture_video", video_url[0]);

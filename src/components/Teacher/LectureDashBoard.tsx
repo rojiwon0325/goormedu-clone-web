@@ -1,8 +1,9 @@
 import React, { Suspense, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   useChapters,
+  useLectureDelete,
   useLectureDetail,
   useLectureUpdate,
 } from "states/server/course";
@@ -41,6 +42,7 @@ const Content: React.FC<{ courseId: number; lectureId: number }> = ({
   courseId,
   lectureId,
 }) => {
+  const navigate = useNavigate();
   const { data: lectureData } = useLectureDetail(courseId, lectureId);
   const {
     register,
@@ -59,7 +61,14 @@ const Content: React.FC<{ courseId: number; lectureId: number }> = ({
   const contentExistRegister = register("content_exist");
   const videoExistRegister = register("video_exist");
 
-  const { mutate, isLoading } = useLectureUpdate(courseId, lectureId);
+  const { mutate: updateMutate, isLoading: updateLoading } = useLectureUpdate(
+    courseId,
+    lectureId
+  );
+  const { mutate: deleteMutate, isLoading: deleteLoading } = useLectureDelete(
+    courseId,
+    lectureId
+  );
 
   const onSubmit = handleSubmit(({ video_url, title, content, ...rest }) => {
     const body = new FormData();
@@ -71,8 +80,10 @@ const Content: React.FC<{ courseId: number; lectureId: number }> = ({
     for (const [key, val] of Object.entries(rest)) body.append(key, val + "");
     if (content) body.append("content", content);
     if (video_url[0]) body.append("lecture_video", video_url[0]);
-    if (!isLoading) {
-      mutate(body);
+    if (updateLoading || deleteLoading) {
+      alert("잠시만 기다려주세요.");
+    } else {
+      updateMutate(body);
     }
   });
 
@@ -172,12 +183,27 @@ const Content: React.FC<{ courseId: number; lectureId: number }> = ({
           <div className="w-full flex-center">
             <button
               type="submit"
-              className={`w-1/2 py-2 bg-blue rounded-lg ${
-                !isValid || isLoading ? "opacity-50" : "opacity-100"
-              } text-white font-NanumSquareRoundBold shadow-md`}
-              disabled={!isValid || isLoading}
+              className="flex-1 py-2 px-4 bg-blue text-white font-NanumSquareRoundBold rounded-lg shadow-md"
+              disabled={!isValid || updateLoading || deleteLoading}
             >
               변경
+            </button>
+            <div className="w-4" />
+            <button
+              type="button"
+              onClick={() =>
+                deleteMutate(undefined, {
+                  onSuccess: (data) => {
+                    if (data.data.ok) {
+                      navigate(`/teacher/${courseId}`);
+                    }
+                  },
+                })
+              }
+              className="flex-1 py-2 px-4 bg-gray229 text-black font-NanumSquareRoundBold rounded-lg shadow-md"
+              disabled={!isValid || updateLoading || deleteLoading}
+            >
+              삭제
             </button>
           </div>
         </form>

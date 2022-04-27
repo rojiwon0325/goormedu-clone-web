@@ -68,7 +68,6 @@ const Footer: React.FC<{
         <button
           onClick={() => {
             mutate(undefined, {
-              onError: alert,
               onSuccess: (data) => {
                 if (data.data.ok) {
                   if (nextLectureId) {

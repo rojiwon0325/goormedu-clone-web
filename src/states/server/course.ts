@@ -328,7 +328,7 @@ export const useComplete = (courseId: number, lectureId: number) =>
   useMutation<QueryResult<ICompletionRecord>>(
     () =>
       axios.post(
-        `${api}/courses/${courseId}/lectures/${lectureId}`,
+        `${api}/courses/${courseId}/lectures/${lectureId}/complete`,
         {},
         { withCredentials: true }
       ),

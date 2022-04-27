@@ -73,8 +73,6 @@ const Footer: React.FC<{
                   if (nextLectureId) {
                     navigate(`/classroom/${courseId}/${nextLectureId}`);
                   }
-                } else {
-                  alert(data.data.error);
                 }
               },
             });

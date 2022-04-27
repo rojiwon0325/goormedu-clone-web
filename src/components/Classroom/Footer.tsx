@@ -69,10 +69,8 @@ const Footer: React.FC<{
           onClick={() => {
             mutate(undefined, {
               onSuccess: (data) => {
-                if (data.data.ok) {
-                  if (nextLectureId) {
-                    navigate(`/classroom/${courseId}/${nextLectureId}`);
-                  }
+                if (data.data.ok && nextLectureId) {
+                  navigate(`/classroom/${courseId}/${nextLectureId}`);
                 }
               },
             });

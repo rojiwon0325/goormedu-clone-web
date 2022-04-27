@@ -110,6 +110,7 @@ export const useLearnRecord = (courseId: number) =>
         withCredentials: true,
       }),
     {
+      suspense: false,
       enabled: !!courseId,
     }
   );
@@ -126,9 +127,8 @@ export const useLearn = (courseId: number) =>
       onError: alert,
       onSuccess: (data) => {
         if (data.data.ok) {
-          queryClient.setQueryData(["courses", courseId, "learn-record"], {
-            data,
-          });
+          queryClient.setQueryData(["courses", courseId, "learn-record"], data);
+          alert("수강신청되었습니다.");
         } else {
           alert(
             data.data.error === "Jwt Not Authenticated"

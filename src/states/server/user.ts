@@ -15,14 +15,12 @@ export const useProfile = () =>
     () => axios.get(`${api}/users/profile`, { withCredentials: true }),
     {
       staleTime: 0,
-      onSuccess: ({ data }) =>
-        data.ok
-          ? queryClient.setQueryData(["users", data.result.id], {
-              data: { ok: true, result: data.result },
-            })
-          : null,
-
       onError: alert,
+      onSuccess: (data: QueryResult<IUserDetail>) => {
+        if (data.data.ok) {
+          queryClient.setQueryData(["users", data.data.result.id], data);
+        }
+      },
     }
   );
 
@@ -49,9 +47,7 @@ export const useCreateTeacherRecord = () =>
         if (data.data.ok) {
           queryClient.setQueryData(
             ["users", data.data.result.user_id, "teacher-record"],
-            {
-              data: { ok: true, result: data.data.result },
-            }
+            data
           );
           alert("신청되었습니다.");
         } else {
@@ -72,9 +68,7 @@ export const useUpdateTeacherRecord = () =>
         if (data.data.ok) {
           queryClient.setQueryData(
             ["users", data.data.result.user_id, "teacher-record"],
-            {
-              data: { ok: true, result: data.data.result },
-            }
+            data
           );
           alert("수정되었습니다.");
         } else {

@@ -1,6 +1,6 @@
-import { ICourse } from "interfaces/course";
 import { ILearnRecord } from "interfaces/user";
 import React, { Suspense, useCallback, useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { CourseLectureList } from "states/client";
@@ -14,16 +14,46 @@ import HeaderSkeleton from "./HeaderSkeleton";
 
 const Header: React.FC<{ courseId: number }> = ({ courseId }) => {
   const { data: courseData } = useCourse(courseId);
-  const { data: learnRecordData } = useLearnRecord(courseId);
 
-  if (courseData?.data.ok && learnRecordData?.data) {
+  if (courseData?.data.ok) {
     return (
-      <HeaderContent
-        course={courseData.data.result}
-        {...(learnRecordData.data.ok && {
-          learnRecord: learnRecordData.data.result,
-        })}
-      />
+      <div className="w-full flex flex-col sm:flex-row justify-between">
+        <Helmet>
+          <title>{courseData.data.result.title} | GoormEdu</title>
+        </Helmet>
+        <div
+          className="w-full sm:w-64 md:w-80 aspect-video flex-none bg-white bg-cover bg-center rounded-lg"
+          style={{
+            backgroundImage: `url(${courseData.data.result.cover_image})`,
+          }}
+        />
+        <div className="w-full flex flex-col items-start justify-between py-2 sm:py-0 sm:px-4">
+          <div className="h-7 text-lg font-NanumSquareRoundBold overflow-hidden">
+            {courseData.data.result.title}
+          </div>
+          <Suspense
+            fallback={
+              <div className="w-full">
+                <div className="h-5 text-sm">강의 진행도 0%</div>
+                <div className="h-5 w-full bg-gray190 rounded-lg overflow-hidden relative" />
+              </div>
+            }
+          >
+            <LearnRecordInfo courseId={courseData.data.result.id} />
+          </Suspense>
+        </div>
+        <div className="w-full sm:w-auto flex flex-col flex-none">
+          <Suspense
+            fallback={
+              <button className="w-full py-2 px-3 bg-gray122 text-white font-NanumSquareRoundBold cursor-default rounded-lg">
+                수강 신청
+              </button>
+            }
+          >
+            <LearnButton courseId={courseData.data.result.id} />
+          </Suspense>
+        </div>
+      </div>
     );
   } else {
     return <HeaderSkeleton />;
@@ -32,54 +62,24 @@ const Header: React.FC<{ courseId: number }> = ({ courseId }) => {
 
 export default Header;
 
-const HeaderContent: React.FC<{
-  course: ICourse;
-  learnRecord?: ILearnRecord;
-}> = ({ course: { id, title, cover_image }, learnRecord }) => {
-  const navigate = useNavigate();
-  const { mutate: learn, isLoading } = useLearn(id);
+const LearnRecordInfo: React.FC<{ courseId: number }> = ({ courseId }) => {
+  const { data: learnRecordData } = useLearnRecord(courseId);
+  const [learnRecord, setLearnRecord] = useState<ILearnRecord>();
   const courseLectureList = useRecoilValue(CourseLectureList);
-  const [lectures, setLectures] = useState<number[]>([]);
-
-  const onClick = useCallback(() => {
-    if (learnRecord) {
-      if (learnRecord.last_lecture_id) {
-        navigate(`/classroom/${id}/${learnRecord.last_lecture_id}`);
-      } else if (lectures[0]) {
-        navigate(`/classroom/${id}/${lectures[0]}`);
-      } else {
-        alert("강의가 존재하지 않습니다.");
-      }
-    } else if (!isLoading) {
-      learn(undefined, {
-        onSuccess: (data) => {
-          if (data.data.ok && lectures[0]) {
-            navigate(`/classroom/${id}/${lectures[0]}`);
-          }
-        },
-      });
-    }
-  }, [id, isLoading, learn, learnRecord, lectures, navigate]);
 
   useEffect(() => {
-    const list = courseLectureList[id];
-    if (list) setLectures(list.map((lecture) => lecture.id));
-  }, [courseLectureList, id]);
+    if (learnRecordData?.data.ok) {
+      setLearnRecord(learnRecordData.data.result);
+    }
+  }, [learnRecordData]);
 
-  return (
-    <div className="w-full flex flex-col sm:flex-row justify-between">
-      <div
-        className="w-full sm:w-64 md:w-80 aspect-video flex-none bg-white bg-cover bg-center rounded-lg"
-        style={{ backgroundImage: `url(${cover_image})` }}
-      />
-      <div className="w-full flex flex-col items-start justify-between py-2 sm:py-0 sm:px-4">
-        <div className="h-7 text-lg font-NanumSquareRoundBold overflow-hidden">
-          {title}
-        </div>
+  if (learnRecord) {
+    return (
+      <>
         <Suspense>
-          {learnRecord?.last_lecture_id ? (
+          {learnRecord.last_lecture_id ? (
             <LastLecture
-              courseId={id}
+              courseId={courseId}
               lectureId={learnRecord.last_lecture_id}
             />
           ) : null}
@@ -87,7 +87,8 @@ const HeaderContent: React.FC<{
         <div className="w-full">
           <div className="h-5 text-sm">
             강의 진행도
-            {learnRecord?.count_completion_record ?? 0 / (lectures.length || 1)}
+            {learnRecord?.count_completion_record ??
+              0 / (courseLectureList[courseId]?.length || 1)}
             %
           </div>
           <div className="h-5 w-full bg-blue rounded-lg overflow-hidden relative">
@@ -96,23 +97,22 @@ const HeaderContent: React.FC<{
               style={{
                 transform: `translateX(${
                   learnRecord?.count_completion_record ??
-                  0 / (lectures.length || 1)
+                  0 / (courseLectureList[courseId]?.length || 1)
                 }%)`,
               }}
             />
           </div>
         </div>
+      </>
+    );
+  } else {
+    return (
+      <div className="w-full">
+        <div className="h-5 text-sm">강의 진행도 0%</div>
+        <div className="h-5 w-full bg-gray190 rounded-lg overflow-hidden relative" />
       </div>
-      <div className="w-full sm:w-auto flex flex-col flex-none">
-        <button
-          onClick={onClick}
-          className="w-full py-2 px-3 bg-blue text-white font-NanumSquareRoundBold rounded-lg"
-        >
-          {learnRecord ? "강의 듣기" : "수강 신청"}
-        </button>
-      </div>
-    </div>
-  );
+    );
+  }
 };
 
 const LastLecture: React.FC<{ courseId: number; lectureId: number }> = ({
@@ -121,19 +121,73 @@ const LastLecture: React.FC<{ courseId: number; lectureId: number }> = ({
 }) => {
   const navigate = useNavigate();
   const { data } = useLectureDetail(courseId, lectureId);
+
   if (data?.data.ok) {
     return (
       <div className="h-7 w-full flex overflow-hidden">
         마지막 강의
         <div
           onClick={() => navigate(`/classroom/${courseId}/${lectureId}`)}
-          className="w-full px-2 whitespace-nowrap overflow-hidden cursor-pointer hover:underline"
+          className="flex-1 px-2 whitespace-nowrap overflow-hidden cursor-pointer hover:underline"
         >
           {data.data.result.title}
         </div>
       </div>
     );
   } else {
-    return <div className="h-7 w-full flex overflow-hidden">마지막 강의 </div>;
+    return null;
   }
+};
+
+const LearnButton: React.FC<{ courseId: number }> = ({ courseId }) => {
+  const navigate = useNavigate();
+  const { data: learnRecordData } = useLearnRecord(courseId);
+  const courseLectureList = useRecoilValue(CourseLectureList);
+  const { mutate: learn, isLoading } = useLearn(courseId);
+  const [value, setValue] = useState("수강 신청");
+
+  const onClick = useCallback(() => {
+    if (learnRecordData) {
+      if (learnRecordData.data.ok) {
+        if (learnRecordData.data.result.last_lecture_id) {
+          navigate(
+            `/classroom/${courseId}/${learnRecordData.data.result.last_lecture_id}`
+          );
+        } else {
+          const lectures = courseLectureList[courseId];
+          if (lectures && lectures[0]) {
+            navigate(`/classroom/${courseId}/${lectures[0]}`);
+          } else {
+            alert("강의가 존재하지 않습니다.");
+          }
+        }
+      } else if (!isLoading) {
+        learn();
+      }
+    }
+  }, [
+    courseId,
+    courseLectureList,
+    isLoading,
+    learn,
+    learnRecordData,
+    navigate,
+  ]);
+
+  useEffect(() => {
+    if (learnRecordData?.data.ok) {
+      setValue("강의 듣기");
+    } else {
+      setValue("수강 신청");
+    }
+  }, [learnRecordData]);
+
+  return (
+    <button
+      onClick={onClick}
+      className="w-full py-2 px-3 bg-blue text-white font-NanumSquareRoundBold rounded-lg"
+    >
+      {value}
+    </button>
+  );
 };

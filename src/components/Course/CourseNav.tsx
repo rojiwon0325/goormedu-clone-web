@@ -1,5 +1,7 @@
 import { Common } from "components";
 import { IChapter, ILecture } from "interfaces/course";
+import { QueryResult } from "interfaces/query";
+import { ILearnRecord } from "interfaces/user";
 import React, { Suspense, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
@@ -16,11 +18,13 @@ const CourseNav: React.FC<{ courseId: number; darkmode?: boolean }> = ({
   darkmode = false,
 }) => {
   const { data: chaptersData } = useChapters(courseId);
-  const [chapters, setChapters] = useState<IChapter[]>();
+  const [chapters, setChapters] = useState<IChapter[]>([]);
 
   useEffect(() => {
-    if (chaptersData?.data.ok && chapters === undefined) {
-      setChapters(chaptersData.data.result.sort((a, b) => a.order - b.order));
+    if (chaptersData?.data.ok) {
+      setChapters([
+        ...chaptersData.data.result.sort((a, b) => a.order - b.order),
+      ]);
     }
   }, [chaptersData, chapters]);
 
@@ -95,6 +99,7 @@ const LecturesWrap: React.FC<{
   darkmode: boolean;
 }> = ({ courseId, chapterId, chapterOrder, darkmode }) => {
   const { data: lecturesData } = useLectures(courseId, chapterId);
+  const { data: learnRecordData } = useLearnRecord(courseId);
   const [lectures, setLectures] = useState<ILecture[]>([]);
   const setCourseLectureList = useSetRecoilState(CourseLectureList);
 
@@ -135,18 +140,19 @@ const LecturesWrap: React.FC<{
           key={`lecture-${lecture.id}`}
           lecture={lecture}
           darkmode={darkmode}
+          learnRecordData={learnRecordData}
         />
       ))}
     </>
   );
 };
 
-const Lecture: React.FC<{ lecture: ILecture; darkmode: boolean }> = ({
-  lecture: { title, id, course_id },
-  darkmode,
-}) => {
+const Lecture: React.FC<{
+  lecture: ILecture;
+  darkmode: boolean;
+  learnRecordData: QueryResult<ILearnRecord> | undefined;
+}> = ({ lecture: { title, id, course_id }, darkmode, learnRecordData }) => {
   const navigate = useNavigate();
-  const { data: learnRecordData } = useLearnRecord(course_id);
 
   const onClick = () => {
     if (learnRecordData) {

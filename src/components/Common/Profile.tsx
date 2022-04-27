@@ -21,13 +21,16 @@ const Profile: React.FC = () => {
 
   if (userData === undefined) {
     return (
-      <a
-        ref={logoutRef}
-        href={`${process.env.REACT_APP_API_URL}/auth/logout`}
-        className="hidden"
-      >
-        로그아웃
-      </a>
+      <>
+        <div className="header-h header-w rounded-full border-gray175 border-t-gray219 border-4 animate-spin" />
+        <a
+          ref={logoutRef}
+          href={`${process.env.REACT_APP_API_URL}/auth/logout`}
+          className="hidden"
+        >
+          로그아웃
+        </a>
+      </>
     );
   }
   return (

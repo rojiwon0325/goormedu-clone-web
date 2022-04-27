@@ -15,6 +15,7 @@ export const useProfile = () =>
     () => axios.get(`${api}/users/profile`, { withCredentials: true }),
     {
       staleTime: 0,
+      suspense: false,
       onError: alert,
       onSuccess: (data: QueryResult<IUserDetail>) => {
         if (data.data.ok) {

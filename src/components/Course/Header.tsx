@@ -125,7 +125,7 @@ const LastLecture: React.FC<{ courseId: number; lectureId: number }> = ({
   if (data?.data.ok) {
     return (
       <div className="h-7 w-full flex overflow-hidden">
-        마지막 강의
+        최근에 들은 강의
         <div
           onClick={() => navigate(`/classroom/${courseId}/${lectureId}`)}
           className="flex-1 px-2 whitespace-nowrap overflow-hidden cursor-pointer hover:underline"
@@ -135,7 +135,14 @@ const LastLecture: React.FC<{ courseId: number; lectureId: number }> = ({
       </div>
     );
   } else {
-    return null;
+    return (
+      <div
+        onClick={() => navigate(`/classroom/${courseId}/${lectureId}`)}
+        className="h-7 w-full flex overflow-hidden"
+      >
+        최근에 들은 강의
+      </div>
+    );
   }
 };
 

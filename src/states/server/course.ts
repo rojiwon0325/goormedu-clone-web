@@ -251,6 +251,7 @@ export const useLectureDetail = (courseId: number, lectureId: number) =>
         withCredentials: true,
       }),
     {
+      suspense: false,
       enabled: !!courseId && !!lectureId,
     }
   );

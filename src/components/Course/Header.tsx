@@ -96,8 +96,8 @@ const LearnRecordInfo: React.FC<{ courseId: number }> = ({ courseId }) => {
               className="hwfull bg-gray190 absolute"
               style={{
                 transform: `translateX(${
-                  learnRecord?.count_completion_record ??
-                  0 / (courseLectureList[courseId]?.length || 1)
+                  (learnRecord?.count_completion_record ?? 0) /
+                  (courseLectureList[courseId]?.length || 1)
                 }%)`,
               }}
             />

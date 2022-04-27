@@ -156,7 +156,6 @@ const Lecture: React.FC<{
 
   const onClick = () => {
     if (learnRecordData) {
-      console.log(learnRecordData);
       if (learnRecordData.data.ok) {
         navigate(`/classroom/${course_id}/${id}`);
       } else {

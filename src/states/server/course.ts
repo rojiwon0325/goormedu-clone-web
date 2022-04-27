@@ -127,7 +127,7 @@ export const useLearn = (courseId: number) =>
       onSuccess: (data) => {
         if (data.data.ok) {
           queryClient.setQueryData(["courses", courseId, "learn-record"], {
-            data: { ok: true, result: data.data.result },
+            data,
           });
         } else {
           alert(
@@ -269,7 +269,7 @@ export const useLectureUpdate = (courseId: number, lectureId: number) =>
           queryClient.invalidateQueries(["courses", courseId, "chapters"]);
           queryClient.setQueryData(
             ["courses", courseId, "lectures", lectureId],
-            data.data.result
+            data
           );
           alert("강의가 수정되었습니다.");
         } else {
@@ -337,7 +337,7 @@ export const useComplete = (courseId: number, lectureId: number) =>
         if (data.data.ok) {
           queryClient.setQueriesData(
             ["courses", courseId, "lectures", lectureId, "completion-record"],
-            data.data.result
+            data
           );
         } else {
           alert(data.data.error);
@@ -358,10 +358,7 @@ export const useLearnStart = (courseId: number, lectureId: number) =>
       onError: alert,
       onSuccess: (data: QueryResult<ILearnRecordDetail>) => {
         if (data.data.ok) {
-          queryClient.setQueryData(
-            ["courses", courseId, "learn-record"],
-            data.data.result
-          );
+          queryClient.setQueryData(["courses", courseId, "learn-record"], data);
         }
       },
     }

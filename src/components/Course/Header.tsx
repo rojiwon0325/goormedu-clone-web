@@ -1,6 +1,6 @@
 import { ICourse } from "interfaces/course";
 import { ILearnRecord } from "interfaces/user";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { Suspense, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { CourseLectureList } from "states/client";
@@ -76,9 +76,14 @@ const HeaderContent: React.FC<{
         <div className="h-7 text-lg font-NanumSquareRoundBold overflow-hidden">
           {title}
         </div>
-        {learnRecord?.last_lecture_id ? (
-          <LastLecture courseId={id} lectureId={learnRecord.last_lecture_id} />
-        ) : null}
+        <Suspense>
+          {learnRecord?.last_lecture_id ? (
+            <LastLecture
+              courseId={id}
+              lectureId={learnRecord.last_lecture_id}
+            />
+          ) : null}
+        </Suspense>
         <div className="w-full">
           <div className="h-5 text-sm">
             강의 진행도
@@ -120,7 +125,10 @@ const LastLecture: React.FC<{ courseId: number; lectureId: number }> = ({
     return (
       <div className="h-7 w-full flex overflow-hidden">
         마지막 강의
-        <div onClick={() => navigate(`/classroom/${courseId}/${lectureId}`)}>
+        <div
+          onClick={() => navigate(`/classroom/${courseId}/${lectureId}`)}
+          className="w-full px-2 whitespace-nowrap overflow-hidden cursor-pointer hover:underline"
+        >
           {data.data.result.title}
         </div>
       </div>

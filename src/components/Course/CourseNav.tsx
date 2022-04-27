@@ -7,6 +7,7 @@ import { CourseLectureList } from "states/client";
 import {
   useChapters,
   useCompletionRecord,
+  useLearnRecord,
   useLectures,
 } from "states/server/course";
 
@@ -136,6 +137,22 @@ const Lecture: React.FC<{ lecture: ILecture; darkmode: boolean }> = ({
   darkmode,
 }) => {
   const navigate = useNavigate();
+  const { data: learnRecordData } = useLearnRecord(course_id);
+
+  const onClick = () => {
+    if (learnRecordData) {
+      if (learnRecordData.data.ok) {
+        navigate(`/classroom/${course_id}/${id}`);
+      } else {
+        alert(
+          learnRecordData.data.error === "Jwt Not Authenticated"
+            ? "로그인이 필요합니다."
+            : learnRecordData.data.error
+        );
+      }
+    }
+  };
+
   return (
     <div
       className={`h-14 py-4 px-2 border-gray190 border-t ${
@@ -143,7 +160,7 @@ const Lecture: React.FC<{ lecture: ILecture; darkmode: boolean }> = ({
           ? "bg-indigo border-darkindigo hover:bg-darkblue"
           : "bg-gray229 border-gray190 hover:bg-gray219"
       }  cursor-pointer`}
-      onClick={() => navigate(`/classroom/${course_id}/${id}`)}
+      onClick={onClick}
     >
       <div className="hwfull flex">
         <Suspense

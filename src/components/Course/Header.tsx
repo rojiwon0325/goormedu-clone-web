@@ -47,8 +47,8 @@ const HeaderContent: React.FC<{
       }
     } else if (!isLoading) {
       learn(undefined, {
-        onSuccess: () => {
-          if (lectures[0]) {
+        onSuccess: (data) => {
+          if (data.data.ok && lectures[0]) {
             navigate(`/classroom/${id}/${lectures[0]}`);
           }
         },

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { CourseLectureList } from "states/client";
+import { useComplete } from "states/server/course";
 
 const Footer: React.FC<{
   courseId: number;
@@ -14,6 +15,7 @@ const Footer: React.FC<{
   const [total, setTotal] = useState(0);
   const [prevLectureId, setPrevLecture] = useState(0);
   const [nextLectureId, setNextLecture] = useState(0);
+  const { mutate, isLoading } = useComplete(courseId, lectureId);
 
   useEffect(() => {
     const lectureList = courseLectureList[courseId];
@@ -63,7 +65,16 @@ const Footer: React.FC<{
         </button>
       </div>
       <div className="sm:flex-1 px-2 flex-center justify-end">
-        <button className="flex-none h-7 px-4 bg-lightindigo border-lightgray border text-lightgray font-NanumSquareRoundBold text-sm rounded-lg">
+        <button
+          onClick={() => {
+            mutate();
+            if (nextLectureId) {
+              navigate(`/classroom/${courseId}/${nextLectureId}`);
+            }
+          }}
+          disabled={isLoading}
+          className="flex-none h-7 px-4 bg-lightindigo border-lightgray border text-lightgray font-NanumSquareRoundBold text-sm rounded-lg"
+        >
           수강 완료
         </button>
       </div>

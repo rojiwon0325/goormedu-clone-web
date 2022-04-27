@@ -1,6 +1,10 @@
 import React, { Suspense, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useCourse, useLectureDetail } from "states/server/course";
+import {
+  useCourse,
+  useLearnStart,
+  useLectureDetail,
+} from "states/server/course";
 import Footer from "./Footer";
 import Header from "./Header";
 import Player from "./Player";
@@ -29,22 +33,25 @@ const APILayer: React.FC<{ courseId: number; lectureId: number }> = ({
   const navigate = useNavigate();
   const { data: courseData } = useCourse(courseId);
   const { data: lectureData } = useLectureDetail(courseId, lectureId);
+  const { mutate } = useLearnStart(courseId, lectureId);
 
   useEffect(() => {
-    if (courseData?.data.ok === false) {
-      alert(courseData.data.error);
-      navigate(-1);
-    } else if (lectureData?.data.ok === false) {
-      alert(
-        lectureData.data.error === "Jwt Not Authenticated"
-          ? "로그인이 필요합니다."
-          : lectureData.data.error
-      );
-      navigate(-1);
-    } else {
-      // LR 수정, 최근 학습일자, 최근들은 강의 정보 수정
+    if (courseData && lectureData) {
+      if (!courseData.data.ok) {
+        alert(courseData.data.error);
+        navigate(-1);
+      } else if (!lectureData.data.ok) {
+        alert(
+          lectureData.data.error === "Jwt Not Authenticated"
+            ? "로그인이 필요합니다."
+            : lectureData.data.error
+        );
+        navigate(-1);
+      } else {
+        mutate();
+      }
     }
-  }, [courseData, lectureData, navigate]);
+  }, [courseData, lectureData, navigate, mutate]);
 
   if (courseData?.data.ok && lectureData?.data.ok) {
     return (

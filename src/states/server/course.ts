@@ -315,7 +315,7 @@ export const useLectureDelete = (courseId: number, lectureId: number) =>
 
 export const useCompletionRecord = (courseId: number, lectureId: number) =>
   useQuery<QueryResult<ICompletionRecord>>(
-    ["courses", courseId, "lectures", lectureId],
+    ["courses", courseId, "lectures", lectureId, "completion-record"],
     () =>
       axios.get(
         `${api}/courses/${courseId}/lectures/${lectureId}/completion-record`,
@@ -324,4 +324,45 @@ export const useCompletionRecord = (courseId: number, lectureId: number) =>
   );
 
 export const useComplete = (courseId: number, lectureId: number) =>
-  useMutation<QueryResult<ICompletionRecord>>(() => axios.post(""));
+  useMutation<QueryResult<ICompletionRecord>>(
+    () =>
+      axios.post(
+        `${api}/courses/${courseId}/lectures/${lectureId}`,
+        {},
+        { withCredentials: true }
+      ),
+    {
+      onError: alert,
+      onSuccess: (data) => {
+        if (data.data.ok) {
+          queryClient.setQueriesData(
+            ["courses", courseId, "lectures", lectureId, "completion-record"],
+            data.data.result
+          );
+        } else {
+          alert(data.data.error);
+        }
+      },
+    }
+  );
+
+export const useLearnStart = (courseId: number, lectureId: number) =>
+  useMutation(
+    () =>
+      axios.post(
+        `${api}/courses/${courseId}/lectures/${lectureId}/start`,
+        {},
+        { withCredentials: true }
+      ),
+    {
+      onError: alert,
+      onSuccess: (data: QueryResult<ILearnRecordDetail>) => {
+        if (data.data.ok) {
+          queryClient.setQueryData(
+            ["courses", courseId, "learn-record"],
+            data.data.result
+          );
+        }
+      },
+    }
+  );

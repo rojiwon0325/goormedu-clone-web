@@ -4,7 +4,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { CourseLectureList } from "states/client";
-import { useCourse, useLearn, useLearnRecord } from "states/server/course";
+import {
+  useCourse,
+  useLearn,
+  useLearnRecord,
+  useLectureDetail,
+} from "states/server/course";
 import HeaderSkeleton from "./HeaderSkeleton";
 
 const Header: React.FC<{ courseId: number }> = ({ courseId }) => {
@@ -72,7 +77,7 @@ const HeaderContent: React.FC<{
           {title}
         </div>
         {learnRecord?.last_lecture_id ? (
-          <div className="h-7 w-full overflow-hidden">마지막 강의</div>
+          <LastLecture courseId={id} lectureId={learnRecord.last_lecture_id} />
         ) : null}
         <div className="w-full">
           <div className="h-5 text-sm">
@@ -103,4 +108,24 @@ const HeaderContent: React.FC<{
       </div>
     </div>
   );
+};
+
+const LastLecture: React.FC<{ courseId: number; lectureId: number }> = ({
+  courseId,
+  lectureId,
+}) => {
+  const navigate = useNavigate();
+  const { data } = useLectureDetail(courseId, lectureId);
+  if (data?.data.ok) {
+    return (
+      <div className="h-7 w-full flex overflow-hidden">
+        마지막 강의
+        <div onClick={() => navigate(`/classroom/${courseId}/${lectureId}`)}>
+          {data.data.result.title}
+        </div>
+      </div>
+    );
+  } else {
+    return <div className="h-7 w-full flex overflow-hidden">마지막 강의 </div>;
+  }
 };

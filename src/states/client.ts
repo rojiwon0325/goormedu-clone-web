@@ -13,7 +13,7 @@ export const SelectedUserNav = atom<UserNav>({
 });
 
 interface ICourseLectureList {
-  [key: number]: { id: number; order: number }[]; // lecture id list
+  [key: number]: { id: number; lectureOrder: number; chapterOrder: number }[]; // lecture id list
 }
 
 export const CourseLectureList = atom<ICourseLectureList>({

@@ -100,20 +100,29 @@ const LecturesWrap: React.FC<{
 
   useEffect(() => {
     if (lecturesData?.data.ok) {
-      const lecturelist = lecturesData.data.result;
+      const lecturelist = lecturesData.data.result.sort(
+        (a, b) => a.order - b.order
+      );
       setLectures(lecturelist);
       const result = lecturelist.map(({ id, order }) => ({
         id,
-        order: order * chapterOrder,
+        lectureOrder: order,
+        chapterOrder,
       }));
       const newIds = lecturelist.map(({ id }) => id);
       setCourseLectureList((prev) => {
         const prelist = (prev[courseId] ?? []).filter(
           (lecture) => !newIds.includes(lecture.id)
         );
-        const newlist = [...prelist, ...result].sort(
-          (a, b) => a.order - b.order
-        ); // 중복 발생을 방지하지만 굉장히 비효율적으로 보임
+        const newlist = [...prelist, ...result].sort((a, b) => {
+          const first = a.chapterOrder - b.chapterOrder;
+          const second = a.lectureOrder - b.lectureOrder;
+          if (first) {
+            return first;
+          } else {
+            return second;
+          }
+        }); // 중복 발생을 방지하지만 굉장히 비효율적으로 보임
         return { ...prev, [courseId]: newlist };
       });
     }

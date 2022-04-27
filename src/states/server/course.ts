@@ -65,6 +65,7 @@ export const useCourse = (courseId: number) =>
     ["courses", courseId],
     () => axios.get(`${api}/courses/${courseId}`),
     {
+      suspense: false,
       enabled: !!courseId,
     }
   );

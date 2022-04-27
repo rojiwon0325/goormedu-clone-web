@@ -40,7 +40,7 @@ const Header: React.FC<{
         <div className="h-full w-1/2 py-2 flex items-center justify-end">
           <div
             onClick={() => navigate(`/courses/${courseId}`)}
-            className="px-2 text-white font-NanumSquareRoundBold"
+            className="px-2 text-white font-NanumSquareRoundBold cursor-pointer"
           >
             메인 이동
           </div>

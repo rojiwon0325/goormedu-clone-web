@@ -1,7 +1,7 @@
 import { Common } from "components";
 import React, { Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SideNav from "./SideNav";
 
 const Header: React.FC<{
@@ -9,6 +9,7 @@ const Header: React.FC<{
   courseTitle: string;
   lectureTitle: string;
 }> = ({ courseId, courseTitle, lectureTitle }) => {
+  const navigate = useNavigate();
   const { lecture_id } = useParams();
   const [active, setActive] = useState(false);
 
@@ -37,6 +38,12 @@ const Header: React.FC<{
           </div>
         </div>
         <div className="h-full w-1/2 py-2 flex items-center justify-end">
+          <div
+            onClick={() => navigate(`/courses/${courseId}`)}
+            className="px-2 text-white font-NanumSquareRoundBold"
+          >
+            메인 이동
+          </div>
           <Suspense
             fallback={
               <div className="h-full aspect-square rounded-full border-gray175 border-t-gray219 border-4 animate-spin" />

@@ -27,7 +27,7 @@ const Course: React.FC<{ course: ICourse }> = ({
       className="w-full flex flex-col bg-lightgray rounded-lg"
     >
       <div
-        className="w-full aspect-video flex-none bg-white bg-cover bg-center rounded-lg"
+        className="w-full aspect-video flex-none bg-gray122 bg-cover bg-center rounded-lg"
         style={{ backgroundImage: `url(${cover_image})` }}
       />
       <div className="h-12 w-full px-1 my-2 overflow-hidden text-base font-semibold">

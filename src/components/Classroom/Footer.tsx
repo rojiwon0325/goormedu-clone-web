@@ -67,10 +67,17 @@ const Footer: React.FC<{
       <div className="sm:flex-1 px-2 flex-center justify-end">
         <button
           onClick={() => {
-            mutate();
-            if (nextLectureId) {
-              navigate(`/classroom/${courseId}/${nextLectureId}`);
-            }
+            mutate(undefined, {
+              onSuccess: (data) => {
+                if (data.data.ok) {
+                  if (nextLectureId) {
+                    navigate(`/classroom/${courseId}/${nextLectureId}`);
+                  }
+                } else {
+                  alert(data.data.error);
+                }
+              },
+            });
           }}
           disabled={isLoading}
           className="flex-none h-7 px-4 bg-lightindigo border-lightgray border text-lightgray font-NanumSquareRoundBold text-sm rounded-lg"

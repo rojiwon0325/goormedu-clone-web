@@ -99,8 +99,16 @@ const Content: React.FC<{ courseId: number; lectureId: number }> = ({
 
   useEffect(() => {
     if (lectureData?.data.ok) {
-      if (lectureData.data.result.video_url) setValue("video_exist", true);
-      if (lectureData.data.result.content) setValue("content_exist", true);
+      if (lectureData.data.result.video_url) {
+        setValue("video_exist", true);
+      } else {
+        setValue("video_exist", false);
+      }
+      if (lectureData.data.result.content) {
+        setValue("content_exist", true);
+      } else {
+        setValue("content_exist", false);
+      }
       setValue("title", lectureData.data.result.title);
       setValue("content", lectureData.data.result.content);
       setValue("is_public", lectureData.data.result.is_public);

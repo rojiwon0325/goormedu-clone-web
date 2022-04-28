@@ -36,6 +36,7 @@ export const useCoursesBySearch = (query: string | null) =>
     ["courses", "search", query],
     () => axios.get(`${api}/courses/search?query=${query}`),
     {
+      suspense: false,
       enabled: !!(query && query.length > 0),
     }
   );

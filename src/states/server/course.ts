@@ -160,7 +160,6 @@ export const useLearnRecordDelete = (courseId: number) =>
         }>
       ) => {
         if (data.data.ok) {
-          console.log(data.data.result);
           queryClient.invalidateQueries(["courses", "my-learnings"]);
           queryClient.invalidateQueries(["courses", courseId, "learn-record"]);
           data.data.result.lecture_ids.forEach((id) => {

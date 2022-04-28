@@ -1,3 +1,4 @@
+import { ICourse } from "interfaces/course";
 import React, { Suspense, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useCoursesBySearch } from "states/server/course";
@@ -40,8 +41,15 @@ export default Search;
 
 const SearchWrap: React.FC<{ query: string | null }> = ({ query }) => {
   const { data } = useCoursesBySearch(query);
+  const [courses, setCourses] = useState<ICourse[]>([]);
+
+  useEffect(() => {
+    if (data?.data.ok) {
+      setCourses(data.data.result);
+    }
+  }, [data]);
   if (data?.data.ok) {
-    return <CourseList courses={data.data.result} key={`search-${query}`} />;
+    return <CourseList courses={courses} />;
   }
   return null; // suspense
 };

@@ -366,3 +366,21 @@ export const useLearnStart = (courseId: number, lectureId: number) =>
       },
     }
   );
+export const useChaptersSort = (courseId: number) =>
+  useMutation(
+    (body: { chapters: number[] }) =>
+      axios.post(`${api}/courses/${courseId}/chapters/sort`, body, {
+        withCredentials: true,
+      }),
+    {
+      onError: alert,
+      onSuccess: (data: QueryResult<number[]>) => {
+        if (data.data.ok) {
+          queryClient.invalidateQueries(["courses", courseId, "chapters"]);
+          alert("변경되었습니다.");
+        } else {
+          alert(data.data.error);
+        }
+      },
+    }
+  );

@@ -3,12 +3,17 @@ import { IChapter, ILecture } from "interfaces/course";
 import { MoveItemFn } from "interfaces/dnd";
 import React, { Suspense, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useChapters, useLectures } from "states/server/course";
+import {
+  useChapters,
+  useChaptersSort,
+  useLectures,
+} from "states/server/course";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 const UpdateNav: React.FC<{ courseId: number }> = ({ courseId }) => {
   const { data: chaptersData } = useChapters(courseId);
+  const { mutate: sort, isLoading } = useChaptersSort(courseId);
   const [chapters, setChapters] = useState<IChapter[]>([]);
 
   const moveChapter: MoveItemFn = useCallback(
@@ -57,7 +62,13 @@ const UpdateNav: React.FC<{ courseId: number }> = ({ courseId }) => {
           </DndProvider>
         </div>
       </div>
-      <button className="py-2 px-3 bg-gray190 hover:bg-gray219 rounded-lg">
+      <button
+        onClick={() =>
+          sort({ chapters: chapters.map((chapter) => chapter.id) })
+        }
+        disabled={isLoading}
+        className="py-2 px-3 bg-gray190 hover:bg-gray219 rounded-lg"
+      >
         챕터 순서 저장
       </button>
     </>

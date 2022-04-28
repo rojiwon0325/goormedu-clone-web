@@ -152,17 +152,25 @@ export const useLearnRecordDelete = (courseId: number) =>
       ),
     {
       onError: alert,
-      onSuccess: (data: QueryResult<{ lecture_id: number }>) => {
+      onSuccess: (
+        data: QueryResult<{
+          course_id: number;
+          student_id: number;
+          lecture_ids: number[];
+        }>
+      ) => {
         if (data.data.ok) {
           queryClient.invalidateQueries(["courses", "my-learnings"]);
           queryClient.invalidateQueries(["courses", courseId, "learn-record"]);
-          queryClient.invalidateQueries([
-            "courses",
-            courseId,
-            "lectures",
-            data.data.result.lecture_id,
-            "completion-record",
-          ]);
+          data.data.result.lecture_ids.forEach((id) => {
+            queryClient.invalidateQueries([
+              "courses",
+              courseId,
+              "lectures",
+              id,
+              "completion-record",
+            ]);
+          });
           alert("수강 취소되었습니다.");
         } else {
           alert(data.data.error);

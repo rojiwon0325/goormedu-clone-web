@@ -61,7 +61,7 @@ const CreateChapter: React.FC<{ courseId: number }> = ({ courseId }) => {
       <button
         onClick={onClick}
         disabled={isLoading}
-        className="p-px aspect-square flex-center bg-gray203 hover:bg-gray190 rounded-lg"
+        className="h-6 w-6 flex-none flex-center bg-gray203 hover:bg-gray190 rounded-lg"
       >
         +
       </button>

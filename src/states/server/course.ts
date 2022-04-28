@@ -384,3 +384,31 @@ export const useChaptersSort = (courseId: number) =>
       },
     }
   );
+export const useLecturesSort = (courseId: number, chapterId: number) =>
+  useMutation(
+    (body: { lectures: number[] }) =>
+      axios.post(
+        `${api}/courses/${courseId}/chapters/${chapterId}/lectures/sort`,
+        body,
+        {
+          withCredentials: true,
+        }
+      ),
+    {
+      onError: alert,
+      onSuccess: (data: QueryResult<number[]>) => {
+        if (data.data.ok) {
+          queryClient.invalidateQueries([
+            "courses",
+            courseId,
+            "chapters",
+            chapterId,
+            "lectures",
+          ]);
+          alert("변경되었습니다.");
+        } else {
+          alert(data.data.error);
+        }
+      },
+    }
+  );

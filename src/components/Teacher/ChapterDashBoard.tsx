@@ -18,6 +18,7 @@ import {
   useLectureCreate,
   useLectureDelete,
   useLectures,
+  useLecturesSort,
 } from "states/server/course";
 
 const ChapterDashBoard: React.FC = () => {
@@ -155,7 +156,7 @@ const CreateLecture: React.FC<{ courseId: number; chapterId: number }> = ({
       <button
         onClick={onClick}
         disabled={isLoading}
-        className="p-px aspect-square flex-center bg-gray203 hover:bg-gray190 rounded-lg"
+        className="h-6 w-6 flex-none flex-center bg-gray203 hover:bg-gray190 rounded-lg"
       >
         +
       </button>
@@ -169,6 +170,7 @@ const LecturesPart: React.FC<{ courseId: number; chapterId: number }> = ({
 }) => {
   const { data } = useLectures(courseId, chapterId);
   const [lectures, setLectures] = useState<ILecture[]>([]);
+  const { mutate: sort, isLoading } = useLecturesSort(courseId, chapterId);
 
   const moveLecture: MoveItemFn = useCallback(
     (dragIndex, hoverIndex) =>
@@ -214,9 +216,15 @@ const LecturesPart: React.FC<{ courseId: number; chapterId: number }> = ({
         </DndProvider>
       </div>
       <div className="pt-14 w-full flex justify-center">
-        <div className="py-2 px-5 bg-gray190 hover:bg-gray219 rounded-lg max-w-fit">
+        <button
+          onClick={() =>
+            sort({ lectures: lectures.map((lecture) => lecture.id) })
+          }
+          disabled={isLoading}
+          className="py-2 px-5 bg-gray190 hover:bg-gray219 rounded-lg max-w-fit"
+        >
           강의 순서 변경
-        </div>
+        </button>
       </div>
     </div>
   );

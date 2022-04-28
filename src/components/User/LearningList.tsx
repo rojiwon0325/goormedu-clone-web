@@ -2,7 +2,10 @@ import React from "react";
 import { Common } from "components";
 import { ICourse } from "interfaces/course";
 import { useNavigate } from "react-router-dom";
-import { useCoursesByLearnings } from "states/server/course";
+import {
+  useCoursesByLearnings,
+  useLearnRecordDelete,
+} from "states/server/course";
 import { useUser } from "states/server/user";
 import LearningListSkeleton from "./LearningListSkeleton";
 
@@ -28,6 +31,7 @@ const Course: React.FC<{ course: ICourse }> = ({
 }) => {
   const navigate = useNavigate();
   const { data: teacherData } = useUser(teacher_id);
+  const { mutate: cancel, isLoading } = useLearnRecordDelete(id);
   return (
     <div className="w-full pt-4 flex justify-between">
       <div
@@ -71,7 +75,11 @@ const Course: React.FC<{ course: ICourse }> = ({
           </button>
         </div>
         <div className="h-1/3 pb-1">
-          <button className="h-full w-24 bg-gray229 text-black font-NanumSquareRoundBold rounded-lg shadow-md">
+          <button
+            onClick={() => cancel()}
+            disabled={isLoading}
+            className="h-full w-24 bg-gray229 text-black font-NanumSquareRoundBold rounded-lg shadow-md"
+          >
             수강 취소
           </button>
         </div>

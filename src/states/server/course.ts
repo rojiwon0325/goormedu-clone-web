@@ -142,6 +142,35 @@ export const useLearn = (courseId: number) =>
     }
   );
 
+export const useLearnRecordDelete = (courseId: number) =>
+  useMutation(
+    () =>
+      axios.post(
+        `${api}/courses/${courseId}/learn-record/delete`,
+        {},
+        { withCredentials: true }
+      ),
+    {
+      onError: alert,
+      onSuccess: (data: QueryResult<{ lecture_id: number }>) => {
+        if (data.data.ok) {
+          queryClient.invalidateQueries(["courses", "my-learnings"]);
+          queryClient.invalidateQueries(["courses", courseId, "learn-record"]);
+          queryClient.invalidateQueries([
+            "courses",
+            courseId,
+            "lectures",
+            data.data.result.lecture_id,
+            "completion-record",
+          ]);
+          alert("수강 취소되었습니다.");
+        } else {
+          alert(data.data.error);
+        }
+      },
+    }
+  );
+
 export const useChapters = (courseId: number) =>
   useQuery<QueryResult<IChapter[]>>(["courses", courseId, "chapters"], () =>
     axios.get(`${api}/courses/${courseId}/chapters`)

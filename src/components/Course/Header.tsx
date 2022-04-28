@@ -163,6 +163,7 @@ const LearnButton: React.FC<{ courseId: number }> = ({ courseId }) => {
         } else {
           const lectures = courseLectureList[courseId];
           if (lectures && lectures[0]) {
+            console.log(lectures);
             navigate(`/classroom/${courseId}/${lectures[0]}`);
           } else {
             alert("강의가 존재하지 않습니다.");

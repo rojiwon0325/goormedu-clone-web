@@ -86,7 +86,7 @@ const LearnRecordInfo: React.FC<{ courseId: number }> = ({ courseId }) => {
         </Suspense>
         <div className="w-full">
           <div className="h-5 text-sm">
-            강의 진행도
+            강의 진행도{" "}
             {((learnRecord?.count_completion_record ?? 0) * 100) /
               (courseLectureList[courseId]?.length || 100)}
             %

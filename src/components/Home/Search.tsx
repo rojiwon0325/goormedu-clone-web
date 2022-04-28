@@ -41,7 +41,7 @@ export default Search;
 const SearchWrap: React.FC<{ query: string | null }> = ({ query }) => {
   const { data } = useCoursesBySearch(query);
   if (data?.data.ok) {
-    return <CourseList courses={data.data.result} />;
+    return <CourseList courses={data.data.result} key={`search-${query}`} />;
   }
   return null; // suspense
 };

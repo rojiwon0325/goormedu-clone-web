@@ -46,10 +46,8 @@ const SearchWrap: React.FC<{ query: string | null }> = ({ query }) => {
   useEffect(() => {
     if (data?.data.ok) {
       setCourses(data.data.result);
+      console.log("검색결과 변경");
     }
   }, [data]);
-  if (data?.data.ok) {
-    return <CourseList courses={courses} />;
-  }
-  return null; // suspense
+  return <CourseList courses={courses} />;
 };

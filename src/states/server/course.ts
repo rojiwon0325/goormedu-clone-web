@@ -33,7 +33,7 @@ export const useCoursesByCategory = (categoryId: number) =>
 
 export const useCoursesBySearch = (query: string | null) =>
   useQuery<QueryResult<ICourse[]>>(
-    ["courses", "search"],
+    ["courses", "search", query],
     () => axios.get(`${api}/courses/search?query=${query}`),
     {
       enabled: !!(query && query.length > 0),

@@ -33,7 +33,7 @@ const CourseNav: React.FC<{ courseId: number; darkmode?: boolean }> = ({
       <div className={`w-full ${darkmode ? "bg-lightindigo" : "bg-lightgray"}`}>
         {chapters.map((chapter, idx) => (
           <Chapter
-            key={`chapter-${chapter.id}`}
+            key={`chapter-${chapter.id}-${idx}`}
             chapter={chapter}
             idx={idx}
             darkmode={darkmode}
